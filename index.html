@@ -43,6 +43,10 @@
     --reflect-bg: #EDF2F7;
     --accent-sleep: #2B4C6F;
     --sleep-bg: #E8EFF7;
+    --accent-glp: #0F766E;
+    --glp-bg: #F0FDFA;
+    --accent-allergy: #854D0E;
+    --allergy-bg: #FEFCE8;
     --active-glow: #10B981;
     --font-serif: "Georgia", "Baskerville", serif;
     --font-sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Segoe UI", sans-serif;
@@ -239,7 +243,7 @@
     cursor: pointer;
   }
 
-  /* Cycle Settings Drawer */
+  /* Master Config Inset Drawer */
   .cycle-drawer {
     display: none;
     margin-top: 8px;
@@ -257,6 +261,7 @@
     align-items: center;
     justify-content: space-between;
     margin-bottom: 6px;
+    gap: 8px;
   }
   .drawer-row:last-child {
     margin-bottom: 0;
@@ -461,6 +466,22 @@
     margin-top: 6px;
     font-size: 11.5px;
   }
+  .nap-clear-btn {
+    background: #FEE2E2;
+    border: 1px solid #FCA5A5;
+    color: #991B1B;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 7px;
+    cursor: pointer;
+    margin-left: auto;
+    white-space: nowrap;
+  }
+  .nap-clear-btn:active {
+    background: #F87171;
+    color: #FFF;
+  }
   .nap-drawer.open {
     display: block;
   }
@@ -525,6 +546,47 @@
     color: var(--text-main);
     padding: 2px 0;
     outline: none;
+  }
+
+  /* ALLERGY & IMMUNOLOGY PROTOCOL CARD (NEW) */
+  .allergy-protocol-card {
+    background: #FEFCE8;
+    border: 1px solid #FEF08A;
+    border-radius: 6px;
+    padding: 7px 9px;
+    margin-top: 8px;
+    font-size: 11.5px;
+  }
+  .allergy-head {
+    font-weight: 700;
+    color: #854D0E;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 4px;
+  }
+  .allergy-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 4px;
+  }
+  .allergy-pill {
+    background: #FFF;
+    border: 1px solid #E4D995;
+    color: #713F12;
+    border-radius: 12px;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.15s ease;
+  }
+  .allergy-pill.active {
+    background: #713F12;
+    color: #FFF;
+    border-color: #713F12;
   }
 
   /* BRAIN DUMP & TETHER CANVAS (IN FRONT) */
@@ -883,7 +945,40 @@
     cursor: pointer;
   }
 
-  /* LATE NIGHT SNACK & FASTING ANCHOR CARD (NEW) */
+  /* GLP-1 PROTOCOL CARD (NEW) */
+  .glp-protocol-card {
+    background: #F0FDFA;
+    border: 1.2px solid #99F6E4;
+    border-radius: 6px;
+    padding: 8px 10px;
+    margin-top: 8px;
+    font-size: 12px;
+  }
+  .glp-head {
+    font-weight: 700;
+    color: #0F766E;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .glp-toggle-btn {
+    background: #CCFBF1;
+    border: 1px solid #5EEAD4;
+    color: #0F766E;
+    border-radius: 12px;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .glp-toggle-btn.active {
+    background: #0F766E;
+    color: #FFF;
+    border-color: #0F766E;
+  }
+
+  /* LATE NIGHT SNACK & FASTING ANCHOR CARD */
   .snack-card {
     background: #FAF7F5;
     border: 1px solid #E2D3CA;
@@ -915,7 +1010,7 @@
     outline: none;
   }
 
-  /* SLEEP TIMERS SETUP CARD (BEFORE BED) */
+  /* SLEEP TIMERS SETUP CARD */
   .sleep-setup-card {
     background: #F3F7FA;
     border: 1px solid #C8D7E6;
@@ -931,6 +1026,52 @@
     align-items: center;
     gap: 4px;
     margin-bottom: 6px;
+  }
+
+  /* AI AUDIT & SYNTHESIS DECKS (GEMINI INTEGRATION) */
+  .ai-action-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--border-color);
+  }
+  .ai-trigger-btn {
+    background: #1C2321;
+    color: #F3EBDD;
+    border: 1px solid #3F4743;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 11.5px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.15s ease;
+  }
+  .ai-trigger-btn:active {
+    background: #3B4440;
+    transform: scale(0.98);
+  }
+  .ai-result-box {
+    display: none;
+    background: #FAF8F5;
+    border: 1px solid var(--border-color);
+    border-left: 3px solid #1C2321;
+    border-radius: 0 6px 6px 0;
+    padding: 9px 11px;
+    margin-top: 8px;
+    font-size: 12.5px;
+    color: #2D3732;
+    line-height: 1.5;
+    white-space: pre-line;
+  }
+  .ai-result-box.loading {
+    display: block;
+    font-style: italic;
+    color: #797E7A;
   }
 
   /* DAILY REFLECTION & HIGHLIGHT */
@@ -1134,18 +1275,22 @@
       </div>
     </div>
 
-    <!-- Cycle Settings Inset Drawer -->
+    <!-- Master Settings Inset Drawer (Cycle & Gemini API) -->
     <div class="cycle-drawer" id="cycleDrawer">
       <div class="drawer-row">
         <span>上次经期首日 (Last Period)：</span>
-        <input type="date" id="cfgLastPeriod" class="drawer-input" onchange="saveCycleSettings()">
+        <input type="date" id="cfgLastPeriod" class="drawer-input" onchange="saveMasterSettings()">
       </div>
       <div class="drawer-row">
         <span>平均周期天数 (Cycle Length)：</span>
-        <input type="number" id="cfgCycleLength" class="drawer-input" style="width:60px;" value="28" min="21" max="45" onchange="saveCycleSettings()">
+        <input type="number" id="cfgCycleLength" class="drawer-input" style="width:60px;" value="28" min="21" max="45" onchange="saveMasterSettings()">
       </div>
-      <div style="font-size:10px; color:var(--text-muted); margin-top:4px;">
-        * 设置后，App 会依据当前日期自动计算所处阶段，更新生理建议与状态箴言。
+      <div class="drawer-row" style="border-top:1px dashed #DDD8CD; padding-top:6px; margin-top:6px;">
+        <span style="color:#2D3732; font-weight:600;">Gemini API Key：</span>
+        <input type="password" id="cfgGeminiKey" class="drawer-input" style="flex:1;" placeholder="AIzaSy..." onchange="saveMasterSettings()">
+      </div>
+      <div style="font-size:10px; color:var(--text-muted); margin-top:3px;">
+        * 填写 Google AI Studio 免费 API Key 后，即可在 Module 04/05 解锁硬核生理代谢审计与全天闭环简报。
       </div>
     </div>
 
@@ -1180,13 +1325,13 @@
     </div>
   </div>
 
-  <!-- MODULE 00: 晨间自驱对账、睡眠结算与体感锚定 -->
+  <!-- MODULE 00: 晨间自驱对账、睡眠结算与抗敏免疫 -->
   <div class="calibration-card">
     <div class="calib-header">
       <div class="calib-title-group">
         <span class="calib-num">00</span>
         <div>
-          <span class="calib-title">晨间对账与体感锚定 (Calibration)</span>
+          <span class="calib-title">晨间对账、睡眠与体感锚定 (Calibration)</span>
           <div class="calib-subtitle">Tuning biological instrument &amp; Sleep Audit</div>
         </div>
       </div>
@@ -1206,18 +1351,33 @@
       <!-- Nap / Split Sleep Drawer -->
       <div class="nap-drawer" id="napDrawer">
         <div class="nap-row">
-          <span>回笼觉/小憩时段：</span>
+          <span>回笼觉时段：</span>
           <input type="time" id="napStart" class="snack-time-input" onchange="autoSave()">
           <span>至</span>
           <input type="time" id="napEnd" class="snack-time-input" onchange="autoSave()">
+          <button type="button" class="nap-clear-btn" onclick="clearNap()" title="删除此段记录">✕ 删除</button>
         </div>
         <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">
-          * 如 07:30 醒后上厕所又睡到 10:00，填写 07:45~10:00，系统将自动合并累计真实睡眠时长。
+          * 填入结束时间后，<strong>全天各个代谢与专注时钟将自动以回笼觉醒来时间为基准顺延</strong>。
         </div>
       </div>
     </div>
 
-    <div style="font-size:11px; font-weight:600; color:#5A5248;">
+    <!-- ALLERGY & IMMUNOLOGY PROTOCOL (NEW) -->
+    <div class="allergy-protocol-card">
+      <div class="allergy-head">
+        <span>🌿 免疫脱敏与抗组胺追踪 (Allergy &amp; Immunology)</span>
+        <span style="font-size:10px; color:#A16207;">监测中枢嗜睡与免疫炎症</span>
+      </div>
+      <div class="allergy-pills">
+        <span class="allergy-pill" id="pill_allergy_shot" onclick="toggleAllergy('shot')">💉 Allergy Shot (脱敏针)</span>
+        <span class="allergy-pill" id="pill_antihistamine" onclick="toggleAllergy('anti')">💊 Antihistamine (抗组胺)</span>
+        <span class="allergy-pill" id="pill_montelukast" onclick="toggleAllergy('monte')">💊 Montelukast (顺尔宁)</span>
+      </div>
+      <input type="text" id="allergyNote" class="custom-food-input" placeholder="记录注射手臂/反应/嗜睡感..." oninput="autoSave()">
+    </div>
+
+    <div style="font-size:11px; font-weight:600; color:#5A5248; margin-top:8px;">
       • 主观精力觉知 (Subjective Readiness)：
     </div>
     <div class="readiness-pills">
@@ -1445,12 +1605,12 @@
     </div>
   </div>
 
-  <!-- MODULE 04: 神经制动阀、深夜进食与睡眠准备 -->
+  <!-- MODULE 04: 神经降落、GLP-1 注射与代谢审计 -->
   <div class="module-card m-winddown" id="cardModule4">
     <div class="card-top-row">
       <div class="module-tag-left">
         <span class="module-num">04</span>
-        <span class="module-title">神经降落、晚餐与睡前锚定</span>
+        <span class="module-title">神经降落、晚餐与代谢审计</span>
         <span class="active-badge-pill">ACTIVE NOW</span>
       </div>
       <div class="module-top-right">
@@ -1470,7 +1630,24 @@
       </div>
     </div>
 
-    <!-- LATE NIGHT SNACK & LAST MEAL TRACKER (NEW) -->
+    <!-- GLP-1 PROTOCOL CARD (NEW) -->
+    <div class="glp-protocol-card" id="glpCard">
+      <div class="glp-head">
+        <span>💉 GLP-1 注射协议 (Weekly Anchor)</span>
+        <button type="button" class="glp-toggle-btn" id="glpToggleBtn" onclick="toggleGLP()">
+          打卡注射
+        </button>
+      </div>
+      <div style="display:flex; align-items:center; gap:6px; margin-top:4px;">
+        <span style="font-size:11px; color:#0F766E;">剂量/备注：</span>
+        <input type="text" id="glpDoseNote" class="custom-food-input" placeholder="如 Semaglutide 0.25mg / Tirzepatide..." oninput="autoSave()">
+      </div>
+      <div style="font-size:10px; color:#115E59; margin-top:3px;" id="glpFridayHint">
+        * 每周五晚常规注射。注射后胃排空减缓，全天饮食审计将自动纳入 GLP-1 药理考量。
+      </div>
+    </div>
+
+    <!-- LATE NIGHT SNACK & LAST MEAL TRACKER -->
     <div class="snack-card">
       <div class="snack-head">
         <span>🌙 深夜加餐 / 最后一次吃东西 (Last Intake)</span>
@@ -1515,7 +1692,7 @@
       </div>
     </div>
 
-    <!-- SLEEP TIME TRACKING INPUT (NEW) -->
+    <!-- SLEEP TIME TRACKING INPUT -->
     <div class="sleep-setup-card">
       <div class="sleep-setup-head">
         <span>🛏 睡眠时间记录 (Sleep Timing)</span>
@@ -1532,9 +1709,18 @@
         </div>
       </div>
     </div>
+
+    <!-- AI DIET & METABOLIC AUDIT TRIGGER (NODE 1) -->
+    <div class="ai-action-bar">
+      <span style="font-size:11.5px; font-weight:700; color:#1C2321;">⚡ 代谢与饮食生理审计 (Metabolic Audit)</span>
+      <button type="button" class="ai-trigger-btn" onclick="auditNutritionAI()">
+        ✦ 运行 Gemini 审计
+      </button>
+    </div>
+    <div class="ai-result-box" id="dietAuditResult"></div>
   </div>
 
-  <!-- MODULE 05: DAILY REFLECTION & HIGHLIGHT -->
+  <!-- MODULE 05: DAILY REFLECTION, HIGHLIGHT & SYNTHESIS (NODE 2) -->
   <div class="reflection-card">
     <div class="reflect-head">
       <div class="reflect-title-group">
@@ -1559,6 +1745,15 @@
       </div>
       <textarea id="dailyReflection" class="evening-ref-textarea" placeholder="卸载今日残余思绪，确认认知闭环，允许今天到此为止..." oninput="autoSave()"></textarea>
     </div>
+
+    <!-- AI DAILY SYNTHESIS & INSPIRATION (NODE 2) -->
+    <div class="ai-action-bar" style="margin-top:12px;">
+      <span style="font-size:11.5px; font-weight:700; color:var(--accent-reflect);">✦ 认知共鸣与闭环简报 (Daily Synthesis)</span>
+      <button type="button" class="ai-trigger-btn" style="background:#2B3E50; border-color:#486581;" onclick="synthesizeDailyAI()">
+        ⚡ 激活认知共鸣
+      </button>
+    </div>
+    <div class="ai-result-box" id="dailySynthesisResult" style="border-left-color:#2B3E50;"></div>
   </div>
 
   <!-- Bottom Utility Bar -->
@@ -1581,9 +1776,10 @@
 <script>
   let currentDateStr = getTodayStr();
   let dayData = {};
-  let cycleConfig = {
+  let masterConfig = {
     lastPeriod: "2026-08-20",
-    cycleLength: 28
+    cycleLength: 28,
+    geminiKey: ""
   };
 
   const CYCLE_WISDOM = {
@@ -1630,6 +1826,41 @@
     document.getElementById('napDrawer').classList.toggle('open');
   }
 
+  function toggleCycleDrawer() {
+    document.getElementById('cycleDrawer').classList.toggle('open');
+  }
+
+  function loadMasterSettings() {
+    const saved = localStorage.getItem('entp_flow_master_config');
+    if (saved) {
+      try {
+        masterConfig = JSON.parse(saved);
+      } catch(e) {}
+    } else {
+      const d = new Date();
+      d.setDate(d.getDate() - 19);
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      masterConfig.lastPeriod = `${y}-${m}-${day}`;
+      masterConfig.cycleLength = 28;
+      masterConfig.geminiKey = "";
+      localStorage.setItem('entp_flow_master_config', JSON.stringify(masterConfig));
+    }
+    document.getElementById('cfgLastPeriod').value = masterConfig.lastPeriod || "";
+    document.getElementById('cfgCycleLength').value = masterConfig.cycleLength || 28;
+    document.getElementById('cfgGeminiKey').value = masterConfig.geminiKey || "";
+  }
+
+  function saveMasterSettings() {
+    masterConfig.lastPeriod = document.getElementById('cfgLastPeriod').value;
+    masterConfig.cycleLength = parseInt(document.getElementById('cfgCycleLength').value, 10) || 28;
+    masterConfig.geminiKey = document.getElementById('cfgGeminiKey').value.trim();
+    localStorage.setItem('entp_flow_master_config', JSON.stringify(masterConfig));
+    calcCyclePhase();
+    showToast("参数配置已更新");
+  }
+
   // Cross-day Sleep & Fasting Calculation Engine
   function calculateSleepAndFasting() {
     const prevDateStr = getPrevDateStr(currentDateStr);
@@ -1650,7 +1881,6 @@
     }
 
     if (!prevData || !prevData.sleepTime) {
-      // Fallback: If no previous day sleep record
       if (napMinutes > 0) {
         const nh = Math.floor(napMinutes / 60);
         const nm = napMinutes % 60;
@@ -1662,24 +1892,19 @@
       return;
     }
 
-    // Previous day: bedTime, sleepTime, lastSnackTime
     const sTime = parseTime(prevData.sleepTime);
     const bTime = prevData.bedTime ? parseTime(prevData.bedTime) : sTime;
     const wTime = parseTime(curWakeTime);
 
-    // Main sleep duration (between prev sleepTime and cur wakeTime)
     let mainSleepMin = (wTime.h * 60 + wTime.m) - (sTime.h * 60 + sTime.m);
     if (mainSleepMin < 0) mainSleepMin += 1440;
 
-    // Total In-bed duration
     let inBedMin = (wTime.h * 60 + wTime.m) - (bTime.h * 60 + bTime.m);
     if (inBedMin < 0) inBedMin += 1440;
 
-    // Latency
     let latencyMin = (sTime.h * 60 + sTime.m) - (bTime.h * 60 + bTime.m);
     if (latencyMin < 0) latencyMin += 1440;
 
-    // Total cumulative sleep
     let totalSleepMin = mainSleepMin + napMinutes;
     let totalH = Math.floor(totalSleepMin / 60);
     let totalM = totalSleepMin % 60;
@@ -1687,12 +1912,10 @@
     let mainH = Math.floor(mainSleepMin / 60);
     let mainM = mainSleepMin % 60;
 
-    // Efficiency
     let totalInBedWithNap = inBedMin + napMinutes;
     let efficiency = totalInBedWithNap > 0 ? Math.round((totalSleepMin / totalInBedWithNap) * 100) : 100;
     if (efficiency > 100) efficiency = 100;
 
-    // Fasting calculation
     let fastingStr = "--";
     if (prevData.lastSnackTime) {
       const snackT = parseTime(prevData.lastSnackTime);
@@ -1713,46 +1936,13 @@
     `;
   }
 
-  function loadCycleSettings() {
-    const saved = localStorage.getItem('entp_flow_cycle_config');
-    if (saved) {
-      try {
-        cycleConfig = JSON.parse(saved);
-      } catch(e) {}
-    } else {
-      const d = new Date();
-      d.setDate(d.getDate() - 19);
-      const y = d.getFullYear();
-      const m = String(d.getMonth() + 1).padStart(2, '0');
-      const day = String(d.getDate()).padStart(2, '0');
-      cycleConfig.lastPeriod = `${y}-${m}-${day}`;
-      cycleConfig.cycleLength = 28;
-      localStorage.setItem('entp_flow_cycle_config', JSON.stringify(cycleConfig));
-    }
-    document.getElementById('cfgLastPeriod').value = cycleConfig.lastPeriod;
-    document.getElementById('cfgCycleLength').value = cycleConfig.cycleLength || 28;
-  }
-
-  function saveCycleSettings() {
-    cycleConfig.lastPeriod = document.getElementById('cfgLastPeriod').value;
-    cycleConfig.cycleLength = parseInt(document.getElementById('cfgCycleLength').value, 10) || 28;
-    localStorage.setItem('entp_flow_cycle_config', JSON.stringify(cycleConfig));
-    calcCyclePhase();
-    showToast("周期配置已更新");
-  }
-
-  function toggleCycleDrawer() {
-    const drawer = document.getElementById('cycleDrawer');
-    drawer.classList.toggle('open');
-  }
-
   function calcCyclePhase() {
-    if (!cycleConfig.lastPeriod) return;
-    const start = new Date(cycleConfig.lastPeriod + "T00:00:00");
+    if (!masterConfig.lastPeriod) return;
+    const start = new Date(masterConfig.lastPeriod + "T00:00:00");
     const current = new Date(currentDateStr + "T00:00:00");
     const diffTime = current.getTime() - start.getTime();
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    const cycleLen = cycleConfig.cycleLength || 28;
+    const cycleLen = masterConfig.cycleLength || 28;
 
     let dayInCycle = ((diffDays % cycleLen) + cycleLen) % cycleLen + 1;
     document.getElementById('cycleDayDisplay').innerText = `Day ${dayInCycle} / ${cycleLen}`;
@@ -1813,10 +2003,31 @@
     return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
   }
 
+  function clearNap() {
+    document.getElementById('napStart').value = '';
+    document.getElementById('napEnd').value = '';
+    dayData.napStart = '';
+    dayData.napEnd = '';
+    document.getElementById('napDrawer').classList.remove('open');
+    autoSave();
+    showToast("回笼觉记录已清除");
+  }
+
   function updateSchedule() {
     const wakeVal = document.getElementById('wakeTime').value;
     if (!wakeVal) return;
-    const { h, m } = parseTime(wakeVal);
+
+    // Determine Effective Awake Time:
+    // If Nap end is specified, base all relative module hours on napEnd!
+    const napStart = document.getElementById('napStart').value;
+    const napEnd = document.getElementById('napEnd').value;
+    let baseTimeStr = wakeVal;
+
+    if (napStart && napEnd) {
+      baseTimeStr = napEnd;
+    }
+
+    const { h, m } = parseTime(baseTimeStr);
 
     document.getElementById('clockM1').innerText = `${addHours(h, m, 0)} ~ ${addHours(h, m, 2.5)}`;
     document.getElementById('coffeeWindowText').innerText = `预计窗口：${addHours(h, m, 1.5)} ~ ${addHours(h, m, 2.0)}`;
@@ -1826,8 +2037,8 @@
 
     const now = new Date();
     const curMins = now.getHours() * 60 + now.getMinutes();
-    const wakeMins = h * 60 + m;
-    let diffH = (curMins - wakeMins) / 60;
+    const baseMins = h * 60 + m;
+    let diffH = (curMins - baseMins) / 60;
     if (diffH < 0) diffH += 24;
 
     document.querySelectorAll('.module-card').forEach(c => c.classList.remove('active-now'));
@@ -1841,10 +2052,39 @@
       document.getElementById('cardModule4').classList.add('active-now');
     }
 
+    // Friday GLP-1 Visual Hint Check
+    const curDate = new Date(currentDateStr + "T00:00:00");
+    const isFriday = curDate.getDay() === 5;
+    const glpCard = document.getElementById('glpCard');
+    const glpBtn = document.getElementById('glpToggleBtn');
+    if (isFriday && !dayData.glpInjected) {
+      glpCard.style.borderColor = "#0D9488";
+      glpBtn.innerText = "⚡ 周五注射日 · 打卡";
+    } else {
+      glpCard.style.borderColor = "#99F6E4";
+      glpBtn.innerText = dayData.glpInjected ? "✓ 今日已注射 GLP-1" : "打卡注射";
+    }
+
     calculateSleepAndFasting();
   }
 
-  // Isolated safe dispatcher for external apps (prevents iOS freezing)
+  function toggleGLP() {
+    dayData.glpInjected = !dayData.glpInjected;
+    const btn = document.getElementById('glpToggleBtn');
+    btn.classList.toggle('active', dayData.glpInjected);
+    btn.innerText = dayData.glpInjected ? "✓ 今日已注射 GLP-1" : "打卡注射";
+    autoSave();
+  }
+
+  function toggleAllergy(type) {
+    if (!dayData.allergy) dayData.allergy = {};
+    dayData.allergy[type] = !dayData.allergy[type];
+    const el = document.getElementById(`pill_allergy_${type}` === 'pill_allergy_shot' ? 'pill_allergy_shot' : (type === 'anti' ? 'pill_antihistamine' : 'pill_montelukast'));
+    if (el) el.classList.toggle('active', dayData.allergy[type]);
+    autoSave();
+  }
+
+  // Safe external music dispatcher
   function openMusic(platform) {
     const song = (document.getElementById('dailyBgmInput').value || '').trim();
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -1858,7 +2098,6 @@
       if (!isMobile) targetUrl = song ? `https://open.spotify.com/search/${encodeURIComponent(song)}` : "https://open.spotify.com";
     }
 
-    // Isolated anchor trigger
     const link = document.createElement('a');
     link.href = targetUrl;
     link.rel = "external";
@@ -1880,6 +2119,8 @@
       bgm: "",
       napStart: "",
       napEnd: "",
+      allergy: { shot: false, anti: false, monte: false },
+      allergyNote: "",
       breakfast: null,
       breakfastCustom: "",
       preworkoutCustom: "",
@@ -1887,10 +2128,14 @@
       lunchCustom: "",
       focusSnackCustom: "",
       dinnerCustom: "",
+      glpInjected: false,
+      glpDoseNote: "",
       lastSnackTime: "",
       lastSnackContent: "",
       bedTime: "",
       sleepTime: "",
+      dietAuditCache: "",
+      dailySynthesisCache: "",
       dailyHighlight: "",
       dailyReflection: "",
       checkboxes: {},
@@ -1914,7 +2159,18 @@
       document.getElementById('napDrawer').classList.remove('open');
     }
 
-    // Meal and Snack Custom fields
+    // Allergy
+    const al = dayData.allergy || {};
+    document.getElementById('pill_allergy_shot').classList.toggle('active', !!al.shot);
+    document.getElementById('pill_antihistamine').classList.toggle('active', !!al.anti);
+    document.getElementById('pill_montelukast').classList.toggle('active', !!al.monte);
+    document.getElementById('allergyNote').value = dayData.allergyNote || "";
+
+    // GLP-1
+    document.getElementById('glpToggleBtn').classList.toggle('active', !!dayData.glpInjected);
+    document.getElementById('glpDoseNote').value = dayData.glpDoseNote || "";
+
+    // Meals
     setBreakfast(dayData.breakfast, false);
     document.getElementById('breakfastCustom').value = dayData.breakfastCustom || "";
     document.getElementById('preworkoutCustom').value = dayData.preworkoutCustom || "";
@@ -1926,6 +2182,23 @@
     document.getElementById('lastSnackContent').value = dayData.lastSnackContent || "";
     document.getElementById('bedTime').value = dayData.bedTime || "";
     document.getElementById('sleepTime').value = dayData.sleepTime || "";
+
+    // AI Results Cache
+    const dBox = document.getElementById('dietAuditResult');
+    if (dayData.dietAuditCache) {
+      dBox.innerHTML = dayData.dietAuditCache;
+      dBox.style.display = "block";
+    } else {
+      dBox.style.display = "none";
+    }
+
+    const sBox = document.getElementById('dailySynthesisResult');
+    if (dayData.dailySynthesisCache) {
+      sBox.innerHTML = dayData.dailySynthesisCache;
+      sBox.style.display = "block";
+    } else {
+      sBox.style.display = "none";
+    }
 
     document.getElementById('dailyHighlight').value = dayData.dailyHighlight || "";
     document.getElementById('dailyReflection').value = dayData.dailyReflection || "";
@@ -1973,6 +2246,9 @@
     dayData.bgm = document.getElementById('dailyBgmInput').value;
     dayData.napStart = document.getElementById('napStart').value;
     dayData.napEnd = document.getElementById('napEnd').value;
+
+    dayData.allergyNote = document.getElementById('allergyNote').value;
+    dayData.glpDoseNote = document.getElementById('glpDoseNote').value;
 
     dayData.breakfastCustom = document.getElementById('breakfastCustom').value;
     dayData.preworkoutCustom = document.getElementById('preworkoutCustom').value;
@@ -2067,8 +2343,132 @@
     autoSave();
   }
 
+  /* =========================================================================
+     AI ENGINE: GEMINI FLASH API DIRECT INTEGRATION (NODE 1 & NODE 2)
+     ========================================================================= */
+  async function callGeminiAPI(systemPrompt, userPrompt) {
+    const key = masterConfig.geminiKey;
+    if (!key) {
+      alert("请先点击上方【配置参数】，填入你的 Gemini API Key！");
+      toggleCycleDrawer();
+      return null;
+    }
+
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`;
+    const payload = {
+      contents: [
+        {
+          role: "user",
+          parts: [
+            { text: `${systemPrompt}\n\n【用户生理与行为数据】:\n${userPrompt}` }
+          ]
+        }
+      ],
+      generationConfig: {
+        temperature: 0.7,
+        maxOutputTokens: 800
+      }
+    };
+
+    try {
+      const resp = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      if (!resp.ok) {
+        const errData = await resp.json();
+        throw new Error(errData.error?.message || "API 调用失败");
+      }
+      const data = await resp.json();
+      const outputText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+      return outputText || "未获取到分析结果。";
+    } catch(err) {
+      alert(`Gemini 调用失败: ${err.message}`);
+      return null;
+    }
+  }
+
+  // NODE 1: 饮食与代谢生理审计
+  async function auditNutritionAI() {
+    const resultBox = document.getElementById('dietAuditResult');
+    resultBox.classList.add('loading');
+    resultBox.style.display = "block";
+    resultBox.innerText = "⚡ 正在解构今日宏量营养素、胰岛素曲线与药理代谢协同...";
+
+    const sysPrompt = `你是一位冷峻、硬核的代谢内分泌与精准营养学专家。你的受众是一位高智识的 ENTP 生物黑客。
+禁止任何公关辞令、禁止提供显而易见的常识建议（如“多吃蔬菜水果多喝水”）、禁止使用“总之”或“综上所述”等废话。
+请直接分三段硬核输出（控制在 250 字以内）：
+1.【血糖与胰岛素曲线评估】：分析全天碳水时序、深夜加餐（若有）对夜间皮质醇/生长激素和空腹断食的影响；结合其 GLP-1 注射状态（若有激活，说明其胃排空延缓、胰岛素平稳度增强，提醒防恶心脱水）。
+2.【补剂与微量元素吸收协同】：评估其正餐油脂对鱼油、D3、Move Free 的包裹缓冲效果；若有抗敏药/脱敏针，提示其代谢负荷。
+3.【明日能量微调】：给出 1-2 条精准且具生物学逻辑的操作性微调指令。`;
+
+    const userPrompt = `
+- 生理周期阶段：${document.getElementById('cycleNameDisplay').innerText} (${document.getElementById('cycleDayDisplay').innerText})
+- GLP-1 注射状态：${dayData.glpInjected ? "已注射" : "未注射"} (备注: ${dayData.glpDoseNote || "无"})
+- 免疫脱敏/抗组胺：脱敏针:${dayData.allergy?.shot ? "是" : "否"}, 抗组胺:${dayData.allergy?.anti ? "是" : "否"}, 顺尔宁:${dayData.allergy?.monte ? "是" : "否"} (备注: ${dayData.allergyNote || "无"})
+- 早餐选择：选项 ${dayData.breakfast || "未选"} (其他实吃: ${dayData.breakfastCustom || "无"})
+- 练前加餐：${dayData.preworkoutCustom || "冷藏地瓜/香蕉标准方案"}
+- 训练记录：${dayData.workoutNote || "未填写"}
+- 今日午餐大餐实吃：${dayData.lunchCustom || "未填写"}
+- 下午工作补给：${dayData.focusSnackCustom || "未填写"}
+- 晚餐实吃：${dayData.dinnerCustom || "未填写"}
+- 深夜最后一次进食：时刻 ${dayData.lastSnackTime || "未记录"}，内容: ${dayData.lastSnackContent || "无"}
+- 红酒杯数：${dayData.drinks?.wine || 0} 杯 (水: ${dayData.drinks?.water || 0} 杯)
+`;
+
+    const res = await callGeminiAPI(sysPrompt, userPrompt);
+    resultBox.classList.remove('loading');
+    if (res) {
+      resultBox.innerText = res;
+      dayData.dietAuditCache = res;
+      autoSave();
+    } else {
+      resultBox.style.display = "none";
+    }
+  }
+
+  // NODE 2: 全天认知共鸣与闭环简报
+  async function synthesizeDailyAI() {
+    const resultBox = document.getElementById('dailySynthesisResult');
+    resultBox.classList.add('loading');
+    resultBox.style.display = "block";
+    resultBox.innerText = "⚡ 正在重构今日认知流转、行为架构与心流锚点...";
+
+    const sysPrompt = `你是一位深邃、敏锐、具备哲学与复杂自组织系统洞察力的智识协作者（Thought Partner）。
+面对一位在旧金山探索科技边界与高维自律的 ENTP，拒绝任何廉价赞美或假大空打气。
+基于其全天精力觉知、训练意图、Brain Dump 碎片、核心待办完成度与夜间反思，输出一段精练而具穿透力的闭环洞察（200-280 字左右）：
+1.【神经架构与认知流动】：提炼其今天在理性建构与狂想游荡之间的张力与模式。
+2.【夜间降落与安全结界】：针对其夜间反思或未竟之事，提供一个客观卸载认知负荷的模型，允许今日彻底归档，平息中枢神经火焰。`;
+
+    const userPrompt = `
+- 生理周期阶段：${document.getElementById('cycleNameDisplay').innerText} (${document.getElementById('cycleDayDisplay').innerText})
+- 晨间主观精力：${dayData.readiness || "balanced"}，多巴胺电量：${dayData.battery || 3}/5
+- 晨间身体训练意图：${dayData.physicalIntent || "未设定"}
+- 今日心流 BGM：${dayData.bgm || "未填"}
+- 灵感与杂念倾泻区 (Brain Dump)：${dayData.brainDump || "无"}
+- 今日核心单核防丢锚完成情况：
+  1. [${dayData.checkboxes?.tether_chk_1 ? "已完成" : "未完成"}] ${dayData.tether?.[0] || ""}
+  2. [${dayData.checkboxes?.tether_chk_2 ? "已完成" : "未完成"}] ${dayData.tether?.[1] || ""}
+  3. [${dayData.checkboxes?.tether_chk_3 ? "已完成" : "未完成"}] ${dayData.tether?.[2] || ""}
+- 今日训练记录：${dayData.workoutNote || "无"}
+- ✨ 今日高光时刻 (Highlight)：${dayData.dailyHighlight || "未填写"}
+- 🌙 夜间反思与闭环沉淀 (Reflection)：${dayData.dailyReflection || "未填写"}
+`;
+
+    const res = await callGeminiAPI(sysPrompt, userPrompt);
+    resultBox.classList.remove('loading');
+    if (res) {
+      resultBox.innerText = res;
+      dayData.dailySynthesisCache = res;
+      autoSave();
+    } else {
+      resultBox.style.display = "none";
+    }
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
-    loadCycleSettings();
+    loadMasterSettings();
     loadDay(getTodayStr());
 
     document.getElementById('dateSelector').addEventListener('change', (e) => {
@@ -2130,11 +2530,12 @@
       }
     });
 
-    // Auto-save listeners on all text inputs
+    // Auto-save input listeners
     [
       'physicalIntent', 'dailyBgmInput', 'breakfastCustom', 'preworkoutCustom', 
       'workoutNote', 'lunchCustom', 'focusSnackCustom', 'dinnerCustom', 
-      'lastSnackContent', 'dailyHighlight', 'dailyReflection', 'brainDump', 
+      'lastSnackContent', 'allergyNote', 'glpDoseNote',
+      'dailyHighlight', 'dailyReflection', 'brainDump', 
       'tether_text_1', 'tether_text_2', 'tether_text_3'
     ].forEach(id => {
       const el = document.getElementById(id);
@@ -2169,7 +2570,7 @@
       Object.keys(parsed).forEach(k => {
         localStorage.setItem(k, parsed[k]);
       });
-      loadCycleSettings();
+      loadMasterSettings();
       loadDay(currentDateStr);
       alert("数据恢复成功！");
     } catch(e) {

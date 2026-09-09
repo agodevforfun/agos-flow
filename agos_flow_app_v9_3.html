@@ -1,0 +1,1850 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="AGO's Flow">
+<meta name="theme-color" content="#FAF8F5">
+<title>AGO's FLOW</title>
+
+<link rel="manifest" href="data:application/manifest+json;utf8,{
+  %22name%22:%22AGO%27s%20Flow%22,
+  %22short_name%22:%22AGO%20Flow%22,
+  %22start_url%22:%22.%22,
+  %22display%22:%22standalone%22,
+  %22background_color%22:%22%23FAF8F5%22,
+  %22theme_color%22:%22%23FAF8F5%22,
+  %22icons%22:[{%22src%22:%22data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%231F2321'/><text x='50' y='63' font-size='50' text-anchor='middle' fill='%23E8D8C3' font-family='serif'>⚡</text></svg>%22,%22sizes%22:%22192x192%22,%22type%22:%22image/svg+xml%22}]
+}">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%231F2321'/><text x='50' y='63' font-size='50' text-anchor='middle' fill='%23E8D8C3' font-family='serif'>⚡</text></svg>">
+
+<style>
+  :root {
+    --bg: #FAF8F5;
+    --card-bg: #FFFFFF;
+    --text-main: #1C201E;
+    --text-muted: #686D6A;
+    --border-color: #E2DDD3;
+    --border-light: #ECE8E0;
+    --accent-gold: #8C532B;
+    --accent-calib: #755B3E;
+    --calib-bg: #F5EFE6;
+    --accent-morning: #9E6422;
+    --morning-bg: #F7EFE4;
+    --accent-workout: #96381D;
+    --workout-bg: #F9EBE5;
+    --accent-focus: #245A41;
+    --focus-bg: #EAF4EE;
+    --accent-winddown: #40466E;
+    --winddown-bg: #EFEFF7;
+    --accent-reflect: #334E68;
+    --reflect-bg: #EDF2F7;
+    --active-glow: #10B981;
+    --font-serif: "Georgia", "Baskerville", serif;
+    --font-sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Segoe UI", sans-serif;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg);
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    line-height: 1.45;
+    font-size: 14.5px;
+    padding-bottom: env(safe-area-inset-bottom, 30px);
+    overflow-x: hidden;
+  }
+
+  .container {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 14px 16px 50px 16px;
+  }
+
+  /* Clean Top Bar */
+  .top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0 12px 0;
+    border-bottom: 2px solid var(--text-main);
+    margin-bottom: 14px;
+  }
+  .app-title {
+    font-family: var(--font-serif);
+    font-size: 23px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin: 0;
+    color: #111413;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* Date Switcher */
+  .date-controls {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    background: #FFF;
+    border: 1px solid var(--border-color);
+    padding: 4px 6px;
+    border-radius: 6px;
+  }
+  .date-btn {
+    background: none;
+    border: none;
+    font-size: 16px;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 2px 4px;
+    line-height: 1;
+  }
+  .date-input {
+    border: none;
+    background: transparent;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-main);
+    outline: none;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  /* Biological Master Card */
+  .bio-master-card {
+    background: var(--card-bg);
+    border: 1.2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+  }
+  .bio-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  @media (max-width: 420px) {
+    .bio-grid { grid-template-columns: 1fr; gap: 10px; }
+  }
+  .bio-cell-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .wake-input-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .time-field {
+    border: 1.2px solid var(--border-color);
+    border-radius: 5px;
+    padding: 4px 7px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--text-main);
+    background: #FAF9F6;
+    outline: none;
+  }
+  .time-field:focus {
+    border-color: var(--accent-gold);
+    background: #FFF;
+  }
+  .quick-wake-btn {
+    border: 1px solid var(--border-color);
+    background: #F4F2EB;
+    border-radius: 4px;
+    padding: 4px 7px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  /* Cycle Phase & Wisdom */
+  .cycle-auto-box {
+    background: #FAF9F6;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 7px 9px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .cycle-status-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .cycle-name-tag {
+    font-weight: 700;
+    font-size: 12.5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .cycle-day-badge {
+    font-size: 10px;
+    font-weight: 700;
+    background: #ECE8DE;
+    color: #4A4D4A;
+    padding: 1.5px 5.5px;
+    border-radius: 3px;
+  }
+  .cycle-hint {
+    font-size: 11px;
+    color: #4D524F;
+    line-height: 1.35;
+  }
+  .cycle-wisdom-box {
+    border-top: 1px dashed #DDD8CD;
+    margin-top: 3px;
+    padding-top: 5px;
+    font-family: var(--font-serif);
+    font-size: 11.5px;
+    font-style: italic;
+    color: #634730;
+    line-height: 1.4;
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .cycle-wisdom-quote {
+    flex: 1;
+  }
+  .cycle-settings-link {
+    font-size: 10px;
+    color: var(--accent-gold);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  /* Cycle Settings Drawer */
+  .cycle-drawer {
+    display: none;
+    margin-top: 8px;
+    padding: 8px 10px;
+    background: #FFF;
+    border: 1px dashed var(--border-color);
+    border-radius: 6px;
+    font-size: 11.5px;
+  }
+  .cycle-drawer.open {
+    display: block;
+  }
+  .drawer-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+  .drawer-row:last-child {
+    margin-bottom: 0;
+  }
+  .drawer-input {
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 12px;
+    background: #FAF9F6;
+  }
+
+  /* Battery row */
+  .battery-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 9px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--border-light);
+  }
+  .battery-dots {
+    display: flex;
+    gap: 6px;
+  }
+  .b-dot {
+    width: 20px;
+    height: 12px;
+    border: 1.2px solid #8C918E;
+    border-radius: 3px;
+    background: #FFF;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+  .b-dot.filled {
+    background: #2D3732;
+    border-color: #2D3732;
+  }
+
+  /* DAILY SONIC ANCHOR / BGM CAPSULE BAR */
+  .bgm-card {
+    background: #FAF9F5;
+    border: 1.2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px 12px 9px 12px;
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .bgm-row-top {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    width: 100%;
+  }
+  .bgm-icon {
+    font-size: 14px;
+    color: var(--accent-gold);
+    flex-shrink: 0;
+  }
+  .bgm-input {
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+    border: none;
+    background: transparent;
+    border-bottom: 1px dotted #B0ABA0;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-main);
+    padding: 3px 0;
+    outline: none;
+  }
+  .bgm-input::placeholder {
+    color: #9C9F9D;
+    font-style: italic;
+    font-size: 12px;
+  }
+  .bgm-row-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+  }
+  .music-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    background: #FFF;
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 3.5px 9px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #383B38;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all 0.15s ease;
+  }
+  .music-btn:active {
+    background: #EAE6DB;
+    transform: scale(0.97);
+  }
+
+  /* MODULE 00: MORNING CALIBRATION */
+  .calibration-card {
+    background: var(--card-bg);
+    border: 1.2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+  }
+  .calib-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-light);
+    padding-bottom: 6px;
+    margin-bottom: 8px;
+  }
+  .calib-title-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .calib-num {
+    font-family: var(--font-serif);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--accent-calib);
+  }
+  .calib-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+  .calib-subtitle {
+    font-size: 10px;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+  .calib-badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2.5px 6.5px;
+    border-radius: 4px;
+    background: var(--calib-bg);
+    color: var(--accent-calib);
+    letter-spacing: 0.3px;
+  }
+
+  .readiness-pills {
+    display: flex;
+    gap: 6px;
+    margin: 6px 0 8px 0;
+  }
+  .readiness-chip {
+    flex: 1;
+    text-align: center;
+    background: #FAF9F6;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 5px 3px;
+    font-size: 11.5px;
+    color: #404441;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+    line-height: 1.25;
+  }
+  .readiness-chip.selected {
+    background: #2D3732;
+    border-color: #2D3732;
+    color: #FFF;
+    font-weight: 600;
+  }
+
+  .intent-input-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #FAF9F6;
+    border-left: 2.5px solid #A68B74;
+    border-radius: 0 4px 4px 0;
+    padding: 5px 8px;
+    margin-top: 4px;
+  }
+  .intent-label {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #614935;
+    white-space: nowrap;
+  }
+  .intent-field {
+    flex: 1;
+    border: none;
+    background: transparent;
+    border-bottom: 1px dotted #B4ADA0;
+    font-size: 12.5px;
+    color: var(--text-main);
+    padding: 2px 0;
+    outline: none;
+  }
+
+  /* BRAIN DUMP & TETHER CANVAS (PLACED IN FRONT) */
+  .canvas-card {
+    background: var(--card-bg);
+    border: 1.2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+  }
+  .canvas-head-clean {
+    border-bottom: 1px solid var(--border-light);
+    padding-bottom: 6px;
+    margin-bottom: 8px;
+  }
+  .canvas-title-main {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-main);
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .canvas-subtitle-quote {
+    font-size: 10px;
+    color: var(--text-muted);
+    font-style: italic;
+    display: block;
+    margin-top: 1px;
+  }
+  .dump-textarea {
+    width: 100%;
+    height: 90px;
+    background-color: #FAF9F6;
+    background-image: radial-gradient(#C4BFB2 0.85px, transparent 0.85px);
+    background-size: 14px 14px;
+    border: 1px dashed #CFC8BA;
+    border-radius: 5px;
+    padding: 8px 10px;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    color: #1F2220;
+    line-height: 1.45;
+    resize: vertical;
+    outline: none;
+  }
+  .dump-textarea:focus {
+    border-color: var(--accent-gold);
+    background-color: #FFF;
+  }
+
+  .tether-container {
+    margin-top: 8px;
+    background: #FAF9F6;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 8px 10px;
+  }
+  .tether-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: #783F15;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .tether-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .tether-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    border-bottom: 1px dotted #A8A49A;
+    font-size: 12.5px;
+    color: var(--text-main);
+    padding: 2px 0;
+    outline: none;
+  }
+
+  /* Module Section Cards */
+  .module-card {
+    background: var(--card-bg);
+    border: 1.2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 12px 14px 12px 14px;
+    margin-bottom: 12px;
+    position: relative;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+  .module-card.active-now {
+    border-color: var(--active-glow);
+    box-shadow: 0 0 0 1.5px rgba(16, 185, 129, 0.45), 0 3px 8px rgba(0,0,0,0.03);
+  }
+
+  .active-badge-pill {
+    display: none;
+    font-size: 9px;
+    font-weight: 700;
+    color: #047857;
+    background: #D1FAE5;
+    border: 0.8px solid #A7F3D0;
+    padding: 1px 6px;
+    border-radius: 10px;
+    letter-spacing: 0.5px;
+    margin-left: 6px;
+    vertical-align: middle;
+    animation: pulse 2s infinite;
+  }
+  .module-card.active-now .active-badge-pill {
+    display: inline-block;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.65; }
+  }
+
+  .card-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-light);
+    padding-bottom: 7px;
+    margin-bottom: 9px;
+    flex-wrap: nowrap;
+    gap: 8px;
+  }
+  .module-tag-left {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex: 1;
+    min-width: 0;
+  }
+  .module-num {
+    font-family: var(--font-serif);
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .module-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--text-main);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .module-top-right {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  .time-pill {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2.5px 6.5px;
+    border-radius: 4px;
+    letter-spacing: 0.3px;
+  }
+  .real-clock-time {
+    font-size: 11px;
+    font-weight: 600;
+    color: #8C532B;
+  }
+
+  /* Color Schemes */
+  .m-morning .module-num { color: var(--accent-morning); }
+  .m-morning .time-pill { background: var(--morning-bg); color: var(--accent-morning); }
+  .m-workout .module-num { color: var(--accent-workout); }
+  .m-workout .time-pill { background: var(--workout-bg); color: var(--accent-workout); }
+  .m-focus .module-num { color: var(--accent-focus); }
+  .m-focus .time-pill { background: var(--focus-bg); color: var(--accent-focus); }
+  .m-winddown .module-num { color: var(--accent-winddown); }
+  .m-winddown .time-pill { background: var(--winddown-bg); color: var(--accent-winddown); }
+
+  /* Tasks */
+  .flow-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 9px;
+    font-size: 13px;
+    line-height: 1.45;
+  }
+  .flow-row:last-child {
+    margin-bottom: 0;
+  }
+  .app-checkbox {
+    width: 17px;
+    height: 17px;
+    border: 1.5px solid #828784;
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 1.5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #FFF;
+    transition: all 0.15s ease;
+  }
+  .app-checkbox.checked {
+    background: #1C2321;
+    border-color: #1C2321;
+  }
+  .app-checkbox.checked::after {
+    content: "✓";
+    font-size: 11px;
+    color: #FFF;
+    font-weight: 700;
+  }
+  .task-body {
+    flex: 1;
+  }
+  .task-body.done {
+    text-decoration: line-through;
+    color: #8E9490;
+  }
+
+  .sub-panel {
+    background: #FAF9F6;
+    border-left: 2.5px solid #CDC8BC;
+    border-radius: 0 4px 4px 0;
+    padding: 6px 8px;
+    margin-top: 5px;
+    font-size: 12px;
+  }
+  .breakfast-radio-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 3px 0;
+    cursor: pointer;
+  }
+  .breakfast-radio-dot {
+    width: 13px;
+    height: 13px;
+    border: 1.2px solid #8C918E;
+    border-radius: 50%;
+    margin-top: 2px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .breakfast-radio-row.selected .breakfast-radio-dot {
+    border-color: var(--accent-gold);
+  }
+  .breakfast-radio-row.selected .breakfast-radio-dot::after {
+    content: "";
+    width: 6.5px;
+    height: 6.5px;
+    background: var(--accent-gold);
+    border-radius: 50%;
+  }
+
+  .pill-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 4px;
+  }
+  .pill-tag {
+    background: #ECE8DE;
+    color: var(--text-main);
+    border-radius: 4px;
+    padding: 3px 8px;
+    font-size: 11.5px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 0.8px solid #DBD5C8;
+    user-select: none;
+    transition: all 0.15s ease;
+  }
+  .pill-tag.taken {
+    background: #1C2321;
+    color: #FFF;
+    border-color: #1C2321;
+    text-decoration: line-through;
+  }
+
+  .badge-rule {
+    display: inline-block;
+    background: #FDF3E7;
+    border: 0.8px solid #F0CFA7;
+    color: #874910;
+    border-radius: 3px;
+    padding: 1px 5px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .badge-warn {
+    display: inline-block;
+    background: #FBEAEA;
+    border: 0.8px solid #F2B8B8;
+    color: #9C1F1F;
+    border-radius: 3px;
+    padding: 1px 5px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .drink-counter-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #F6F6FA;
+    border: 1px solid #D5D5E8;
+    border-radius: 5px;
+    padding: 6px 10px;
+    margin-top: 6px;
+    font-size: 12px;
+  }
+  .drink-ctrl-btn {
+    background: #FFF;
+    border: 1px solid #B4B4D0;
+    border-radius: 3px;
+    padding: 2px 7px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  /* DAILY REFLECTION & HIGHLIGHT CARD (PLACED AT END) */
+  .reflection-card {
+    background: var(--card-bg);
+    border: 1.2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 14px;
+  }
+  .reflect-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-light);
+    padding-bottom: 6px;
+    margin-bottom: 9px;
+  }
+  .reflect-title-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .reflect-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent-reflect);
+    text-transform: uppercase;
+  }
+  .reflect-badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2.5px 6.5px;
+    border-radius: 4px;
+    background: var(--reflect-bg);
+    color: var(--accent-reflect);
+    letter-spacing: 0.3px;
+  }
+  .highlight-wrap {
+    margin-bottom: 8px;
+  }
+  .highlight-label {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #B45309;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 3px;
+  }
+  .highlight-input {
+    width: 100%;
+    border: none;
+    background: #FAF8F5;
+    border-left: 2.5px solid #D97706;
+    border-radius: 0 4px 4px 0;
+    padding: 6px 8px;
+    font-size: 12.5px;
+    color: var(--text-main);
+    outline: none;
+  }
+  .highlight-input:focus {
+    background: #FFF;
+    border-color: #B45309;
+  }
+  .evening-ref-wrap {
+    margin-top: 8px;
+  }
+  .evening-ref-label {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #475569;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 3px;
+  }
+  .evening-ref-textarea {
+    width: 100%;
+    height: 65px;
+    background-color: #FAF9F6;
+    border: 1px dashed #CBD5E1;
+    border-radius: 5px;
+    padding: 6px 8px;
+    font-family: var(--font-sans);
+    font-size: 12.5px;
+    color: var(--text-main);
+    outline: none;
+    resize: vertical;
+  }
+
+  /* Bottom Utility Bar */
+  .footer-clean-deck {
+    border-top: 1px solid var(--border-light);
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .footer-status-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .footer-actions-row {
+    display: flex;
+    gap: 8px;
+  }
+  .footer-btn {
+    flex: 1;
+    background: #FFF;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 6px 4px;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #4A4035;
+    cursor: pointer;
+    text-align: center;
+    white-space: nowrap;
+    transition: background 0.15s ease;
+  }
+  .footer-btn:active {
+    background: #F0EDE6;
+  }
+  .footer-btn.danger {
+    color: #9C2A2A;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: rgba(28, 32, 30, 0.92);
+    color: #FFF;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    pointer-events: none;
+    transition: transform 0.3s ease;
+    z-index: 1000;
+  }
+  .toast.show {
+    transform: translateX(-50%) translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="app-title">AGO's FLOW</div>
+    <div class="date-controls">
+      <button class="date-btn" id="prevDay">‹</button>
+      <input type="date" id="dateSelector" class="date-input">
+      <button class="date-btn" id="nextDay">›</button>
+    </div>
+  </div>
+
+  <!-- Biological Master Card -->
+  <div class="bio-master-card">
+    <div class="bio-grid">
+      <!-- Wake Time Input -->
+      <div>
+        <div class="bio-cell-label">醒来时间 (Wake Time)</div>
+        <div class="wake-input-wrap">
+          <input type="time" id="wakeTime" class="time-field" value="08:00">
+          <button class="quick-wake-btn" id="setNowBtn">设为此时</button>
+        </div>
+      </div>
+
+      <!-- Auto Cycle Phase Tracking & Wisdom of Words -->
+      <div>
+        <div class="bio-cell-label">
+          <span>当前生理周期 (Cycle Phase)</span>
+          <span class="cycle-settings-link" onclick="toggleCycleDrawer()">配置参数</span>
+        </div>
+        <div class="cycle-auto-box">
+          <div class="cycle-status-line">
+            <span class="cycle-name-tag" id="cycleNameDisplay">黄体期 (Luteal)</span>
+            <span class="cycle-day-badge" id="cycleDayDisplay">Day 20 / 28</span>
+          </div>
+          <div class="cycle-hint" id="cycleAdviceDisplay">
+            天然孕酮上升期 · 适合收网沉淀 · 睡前涂抹 Progesterone Lotion
+          </div>
+          <div class="cycle-wisdom-box">
+            <span>“</span>
+            <div class="cycle-wisdom-quote" id="cycleWisdomDisplay">
+              黄体期是天生的审计工具：审视架构漏洞，建立安全边界，不向内苛责。
+            </div>
+            <span>”</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cycle Settings Inset Drawer -->
+    <div class="cycle-drawer" id="cycleDrawer">
+      <div class="drawer-row">
+        <span>上次经期首日 (Last Period)：</span>
+        <input type="date" id="cfgLastPeriod" class="drawer-input" onchange="saveCycleSettings()">
+      </div>
+      <div class="drawer-row">
+        <span>平均周期天数 (Cycle Length)：</span>
+        <input type="number" id="cfgCycleLength" class="drawer-input" style="width:60px;" value="28" min="21" max="45" onchange="saveCycleSettings()">
+      </div>
+      <div style="font-size:10px; color:var(--text-muted); margin-top:4px;">
+        * 设置后，App 会依据当前日期自动计算所处阶段，更新生理建议与状态箴言。
+      </div>
+    </div>
+
+    <!-- Energy Battery -->
+    <div class="battery-wrap">
+      <div class="bio-cell-label" style="margin:0; min-width:70px;">多巴胺电量</div>
+      <div class="battery-dots" id="batteryDots">
+        <div class="b-dot" onclick="setBattery(1)"></div>
+        <div class="b-dot" onclick="setBattery(2)"></div>
+        <div class="b-dot" onclick="setBattery(3)"></div>
+        <div class="b-dot" onclick="setBattery(4)"></div>
+        <div class="b-dot" onclick="setBattery(5)"></div>
+      </div>
+      <span id="batteryLabel" style="font-size:11px; color:var(--text-muted); margin-left:auto;">3/5</span>
+    </div>
+  </div>
+
+  <!-- DAILY SONIC ANCHOR / BGM CAPSULE BAR (NON-OVERFLOW DEEP LINK) -->
+  <div class="bgm-card">
+    <div class="bgm-row-top">
+      <span class="bgm-icon">🎧</span>
+      <input type="text" id="dailyBgmInput" class="bgm-input" placeholder="今日心流 BGM / 歌名 · 艺术家..." oninput="autoSave()">
+    </div>
+    <div class="bgm-row-actions">
+      <span style="font-size:10px; color:var(--text-muted); margin-right:auto; font-style:italic;">直达播放：</span>
+      <button class="music-btn" onclick="openMusic('apple')" title="唤醒 Apple Music">
+        ♫ Apple Music
+      </button>
+      <button class="music-btn" onclick="openMusic('spotify')" title="唤醒 Spotify">
+        🟢 Spotify
+      </button>
+    </div>
+  </div>
+
+  <!-- MODULE 00: 晨间自驱对账与体感锚定 (CALIBRATION) -->
+  <div class="calibration-card">
+    <div class="calib-header">
+      <div class="calib-title-group">
+        <span class="calib-num">00</span>
+        <div>
+          <span class="calib-title">晨间自驱对账与体感锚定 (Calibration)</span>
+          <div class="calib-subtitle">Tuning the biological instrument before deep work</div>
+        </div>
+      </div>
+      <span class="calib-badge">WAKE ANCHOR</span>
+    </div>
+
+    <div style="font-size:11px; font-weight:600; color:#5A5248;">
+      • 主观精力觉知 (Subjective Readiness)：
+    </div>
+    <div class="readiness-pills">
+      <div class="readiness-chip" id="chip_foggy" onclick="setReadiness('foggy')">
+        昏沉混沌<br><span style="font-size:9.5px; opacity:0.8;">(亟需慢碳/轻负荷)</span>
+      </div>
+      <div class="readiness-chip" id="chip_balanced" onclick="setReadiness('balanced')">
+        平衡自洽<br><span style="font-size:9.5px; opacity:0.8;">(适宜沉思/稳步构建)</span>
+      </div>
+      <div class="readiness-chip" id="chip_hyper" onclick="setReadiness('hyper')">
+        高度亢奋<br><span style="font-size:9.5px; opacity:0.8;">(适合高维狂想/突击)</span>
+      </div>
+    </div>
+
+    <div class="intent-input-wrap">
+      <span class="intent-label">• 今日训练意图：</span>
+      <input type="text" id="physicalIntent" class="intent-field" placeholder="力量峰值 / 柔韧流 / 恢复拉伸...">
+    </div>
+  </div>
+
+  <!-- MODULE 00+: BRAIN DUMP & TETHER (MOVED TO FRONT) -->
+  <div class="canvas-card">
+    <div class="canvas-head-clean">
+      <span class="canvas-title-main">💡 Brain Dump · 灵感与闪念倾泻区</span>
+      <span class="canvas-subtitle-quote">Offload working memory first — 一大早将杂念与狂想彻底倾倒</span>
+    </div>
+    <textarea id="brainDump" class="dump-textarea" placeholder="早上醒来第一件事：在这里彻底倒空脑海里的闪念、未完成构想或混沌狂想..."></textarea>
+
+    <!-- Daily Tether -->
+    <div class="tether-container">
+      <div class="tether-title">🎯 今日单核防丢锚 (NON-NEGOTIABLES)</div>
+      <div class="tether-item">
+        <div class="app-checkbox" data-key="tether_chk_1"></div>
+        <input type="text" id="tether_text_1" class="tether-input" placeholder="核心优先事项 1...">
+      </div>
+      <div class="tether-item">
+        <div class="app-checkbox" data-key="tether_chk_2"></div>
+        <input type="text" id="tether_text_2" class="tether-input" placeholder="核心优先事项 2...">
+      </div>
+      <div class="tether-item">
+        <div class="app-checkbox" data-key="tether_chk_3"></div>
+        <input type="text" id="tether_text_3" class="tether-input" placeholder="核心优先事项 3...">
+      </div>
+    </div>
+  </div>
+
+  <!-- MODULE 01: 晨间清扫与纯净手冲 -->
+  <div class="module-card m-morning" id="cardModule1">
+    <div class="card-top-row">
+      <div class="module-tag-left">
+        <span class="module-num">01</span>
+        <span class="module-title">晨间清扫与纯净手冲</span>
+        <span class="active-badge-pill">ACTIVE NOW</span>
+      </div>
+      <div class="module-top-right">
+        <span class="time-pill">+ 0 ~ 2.5 H</span>
+        <span class="real-clock-time" id="clockM1"></span>
+      </div>
+    </div>
+
+    <div class="flow-row">
+      <div class="app-checkbox" data-key="m1_light_psyllium"></div>
+      <div class="task-body">
+        <strong>0–15 min 光与纤维基底：</strong> 旧金山自然光 5–10 min + 1平勺<strong>车前子壳粉</strong>兑 350ml+ 温水速饮。
+        <div style="margin-top:2px;">
+          <span class="badge-rule">强吸附隔离</span> <strong>前后 1 小时严禁服用任何补剂药片！</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-row">
+      <div class="app-checkbox" data-key="m1_breakfast"></div>
+      <div class="task-body">
+        <strong>醒后 1h+ 黄金轻早餐（胃口 3 选 1 · 保持清淡，不配刺激性药片）：</strong>
+        <div class="sub-panel">
+          <div class="breakfast-radio-row" onclick="setBreakfast('A')">
+            <div class="breakfast-radio-dot" id="bf_A"></div>
+            <div><strong>A 慢碳续航</strong>：热 Oat Bran 麸皮粥 + 白煮蛋切碎 / 配半个冷藏烤地瓜</div>
+          </div>
+          <div class="breakfast-radio-row" onclick="setBreakfast('B')">
+            <div class="breakfast-radio-dot" id="bf_B"></div>
+            <div><strong>B 咸口快手</strong>：冰箱备餐 1–2 个白煮蛋 + 烤 Sourdough Roll 一片</div>
+          </div>
+          <div class="breakfast-radio-row" onclick="setBreakfast('C')">
+            <div class="breakfast-radio-dot" id="bf_C"></div>
+            <div><strong>C 甜口清库</strong>：无糖希腊酸奶 + 熟透柿子/香蕉 + Super Seed Blend</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-row">
+      <div class="app-checkbox" data-key="m1_coffee"></div>
+      <div class="task-body">
+        <strong>醒后 90–120 min 单品手冲 ☕️ (纯净咖啡黄金窗)：</strong>
+        <span style="color:#784518; font-weight:600;" id="coffeeWindowText">预计窗口：--:--</span>
+        <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">
+          胃部已有淀粉蛋白打底防反酸，周围无矿物质或高锌 B 族混杂，杜绝心慌烦躁与反胃。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODULE 02: 黄金增肌与正餐重炮补剂 -->
+  <div class="module-card m-workout" id="cardModule2">
+    <div class="card-top-row">
+      <div class="module-tag-left">
+        <span class="module-num">02</span>
+        <span class="module-title">训练与正餐重炮补剂</span>
+        <span class="active-badge-pill">ACTIVE NOW</span>
+      </div>
+      <div class="module-top-right">
+        <span class="time-pill">+ 3 ~ 5 H</span>
+        <span class="real-clock-time" id="clockM2"></span>
+      </div>
+    </div>
+
+    <div style="font-size:11.5px; color:#8A3319; font-weight:600; margin-bottom:6px;">
+      ⚡ 生物巅峰时段：体温、关节滑液与肌力输出极值期（减脂增肌核心窗口）
+    </div>
+
+    <div class="flow-row">
+      <div class="app-checkbox" data-key="m2_preworkout"></div>
+      <div class="task-body">
+        <strong>练前 1 小时 (糖原充沛)：</strong> 冷藏烤地瓜半个 / 或香蕉 1 根 + 原味坚果少许
+      </div>
+    </div>
+
+    <div class="flow-row">
+      <div class="app-checkbox" data-key="m2_workout_done"></div>
+      <div class="task-body">
+        <strong>训练执行：</strong>
+        <span class="pill-tag" style="background:#FFF;">CrossFit 爆发</span>
+        <span class="pill-tag" style="background:#FFF;">力量训练</span>
+        <span class="pill-tag" style="background:#FFF;">Iyengar Yoga</span>
+        <input type="text" id="workoutNote" placeholder="今日课表/部位/重量记录..." style="width:100%; border:none; border-bottom:1px dotted #B0ABA0; background:transparent; font-size:12px; margin-top:4px; padding:2px 0; outline:none;">
+      </div>
+    </div>
+
+    <div class="flow-row">
+      <div class="app-checkbox" data-key="m2_heavy_supps"></div>
+      <div class="task-body">
+        <strong>扎实正餐中 / 后 · 正餐重炮补剂区（油脂缓冲与脂溶协同）：</strong>
+        <div style="font-size:11px; color:#874910; margin-bottom:4px;">
+          <span class="badge-rule">铁律</span> <strong>面前必须有扎实肉类油脂与主食，彻底脱敏硫酸锌！</strong>
+        </div>
+        <div class="pill-group">
+          <span class="pill-tag" data-supp="supp_b_complex">Nature Made B族 1粒 (含23.9mg锌)</span>
+          <span class="pill-tag" data-supp="supp_omega3">NOW 高纯鱼油 2粒</span>
+          <span class="pill-tag" data-supp="supp_move_free">Move Free 氨糖软骨素 1–2粒</span>
+          <span class="pill-tag" data-supp="supp_calcium_d3">Garden of Life 钙镁 1–2粒</span>
+        </div>
+        <div style="font-size:10.5px; color:var(--text-muted); margin-top:3px;">
+          • 鱼油油脂协助钙片 D3/K2 吸收；Move Free 随肉食消化不烧心；练后 30m 内喝 MBS 蛋白粉。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODULE 03: 深度专注流动与线粒体能量泵 -->
+  <div class="module-card m-focus" id="cardModule3">
+    <div class="card-top-row">
+      <div class="module-tag-left">
+        <span class="module-num">03</span>
+        <span class="module-title">能量专注流与下午能量泵</span>
+        <span class="active-badge-pill">ACTIVE NOW</span>
+      </div>
+      <div class="module-top-right">
+        <span class="time-pill">+ 5 ~ 10 H</span>
+        <span class="real-clock-time" id="clockM3"></span>
+      </div>
+    </div>
+
+    <div class="flow-row">
+      <div class="task-body">
+        <strong style="color:var(--accent-focus);">⚡ 状态 A：高能产出 / 认知游荡期 (代码 · 策略 · 深度构建)</strong>
+        <div class="sub-panel" style="background:#F4F8F5; border-color:#C1D9CA; margin-top:4px;">
+          <div>▸ <strong>GoStak 舱装填</strong>：[无盐坚果] ⏐ [Chomps 肉干] ⏐ [冻干草莓/85%+黑巧]</div>
+          <div style="margin-top:3px;">▸ <strong>应急便携</strong>：出门顺手抓白煮蛋 1 枚或香蕉（切断脑雾枯竭）</div>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px; margin-top:6px;">
+          <span style="font-size:11.5px; font-weight:600; color:#27563E;">深度专注块打卡：</span>
+          <label style="display:flex; align-items:center; gap:3px; font-size:12px; cursor:pointer;">
+            <input type="checkbox" id="focusBlock1" onchange="autoSave()"> Block 1
+          </label>
+          <label style="display:flex; align-items:center; gap:3px; font-size:12px; cursor:pointer;">
+            <input type="checkbox" id="focusBlock2" onchange="autoSave()"> Block 2
+          </label>
+          <label style="display:flex; align-items:center; gap:3px; font-size:12px; cursor:pointer;">
+            <input type="checkbox" id="focusBlock3" onchange="autoSave()"> Block 3
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-row" style="margin-top:8px;">
+      <div class="app-checkbox" data-key="m3_malate_pump"></div>
+      <div class="task-body">
+        <strong style="color:#1C4E72;">⚡ 下午疲劳期线粒体能量泵 (醒后 6~7h 左右 · 两镁分立之“提能镁”)：</strong>
+        <div class="sub-panel" style="background:#F2F7FA; border-color:#BAD4E4; margin-top:4px;">
+          <div style="display:flex; align-items:center; justify-content:space-between;">
+            <span class="pill-tag" data-supp="supp_malate_pm" style="background:#FFF;">Source Naturals 苹果酸镁 2粒 (约140mg镁)</span>
+          </div>
+          <div style="font-size:11px; color:#3C5970; margin-top:3px;">
+            • 苹果酸直接供能三羧酸循环，提神抗疲劳，完美平替第二杯咖啡！避开午餐高钙，吸收通道完全通畅。
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODULE 04: 神经制动阀与深度降落 -->
+  <div class="module-card m-winddown" id="cardModule4">
+    <div class="card-top-row">
+      <div class="module-tag-left">
+        <span class="module-num">04</span>
+        <span class="module-title">神经制动阀与深度降落</span>
+        <span class="active-badge-pill">ACTIVE NOW</span>
+      </div>
+      <div class="module-top-right">
+        <span class="time-pill">+ 11 ~ 14 H</span>
+        <span class="real-clock-time" id="clockM4"></span>
+      </div>
+    </div>
+
+    <div class="flow-row">
+      <div class="app-checkbox" data-key="m4_dinner"></div>
+      <div class="task-body">
+        <strong>晚餐充能：</strong> 高蛋白正餐 + 冰箱冷藏烤地瓜（抗性淀粉平稳整夜糖原，防夜间惊醒）
+      </div>
+    </div>
+
+    <div class="flow-row">
+      <div class="app-checkbox" data-key="m4_sensory"></div>
+      <div class="task-body">
+        <strong>多巴胺感官降噪 (Sensory Reset)：</strong> 两片优质芝士 + 1 杯红酒
+        <div class="drink-counter-bar">
+          <div>🍷 红酒: <span id="wineCount">0</span> 杯 ｜ 💧 需配水: <span id="waterReqCount">0</span> 杯 (实饮: <span id="waterDrankCount">0</span>)</div>
+          <div style="display:flex; gap:4px;">
+            <button class="drink-ctrl-btn" onclick="addWine(1)">+1 🍷</button>
+            <button class="drink-ctrl-btn" onclick="addWater(1)">+1 💧</button>
+            <button class="drink-ctrl-btn" onclick="resetDrinks()" style="font-size:10px;">清零</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-row">
+      <div class="app-checkbox" data-key="m4_glycinate_brake"></div>
+      <div class="task-body">
+        <strong>睡前 30–60 min 神经制动阀与激素调谐（两镁分立之“助眠镁”）：</strong>
+        <div class="sub-panel" style="background:#FAF4F0; border-color:#E8C6B2; margin-top:3px;">
+          <div>
+            ▸ <span class="pill-tag" data-supp="supp_glycinate_bed" style="background:#FFF;">分装盒甘氨酸镁 200mg</span>
+            <span style="font-size:11px; color:#684D3B;">跨血脑屏障补充 GABA，阻断兴奋受体，纯放松深睡。</span>
+          </div>
+          <div id="progesteroneWarning" style="margin-top:4px;">
+            <span class="badge-rule">黄体期专属</span> <strong>Day 15–28 睡前涂抹 Progesterone Lotion</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-row">
+      <div class="app-checkbox" data-key="m4_boundary"></div>
+      <div class="task-body">
+        <strong>降落安全结界：</strong> 切断高强度逻辑战略，切换暖光 (&lt;2700K)，进入非审判安全区。
+      </div>
+    </div>
+  </div>
+
+  <!-- MODULE 05: DAILY REFLECTION & HIGHLIGHT (NEW SECTION AT THE END) -->
+  <div class="reflection-card">
+    <div class="reflect-head">
+      <div class="reflect-title-group">
+        <span style="font-size:15px;">🌟</span>
+        <span class="reflect-title">Daily Reflection · 每日高光与反思</span>
+      </div>
+      <span class="reflect-badge">DAY'S END</span>
+    </div>
+
+    <!-- Highlight -->
+    <div class="highlight-wrap">
+      <div class="highlight-label">
+        <span>✨</span> <strong>今日高光 (Today's Highlight · 不可替代之刻)：</strong>
+      </div>
+      <input type="text" id="dailyHighlight" class="highlight-input" placeholder="今天最值得铭记的产出、体悟或松弛时刻..." oninput="autoSave()">
+    </div>
+
+    <!-- Reflection -->
+    <div class="evening-ref-wrap">
+      <div class="evening-ref-label">
+        <span>🌙</span> <strong>夜间反思与闭环沉淀 (Closing Synthesis)：</strong>
+      </div>
+      <textarea id="dailyReflection" class="evening-ref-textarea" placeholder="卸载今日残余思绪，确认认知闭环，允许今天到此为止..." oninput="autoSave()"></textarea>
+    </div>
+  </div>
+
+  <!-- Bottom Utility Bar -->
+  <div class="footer-clean-deck">
+    <div class="footer-status-row">
+      <span>● 数据已实时保存在本地存储 (LocalStorage)</span>
+    </div>
+    <div class="footer-actions-row">
+      <button class="footer-btn" onclick="exportData()">导出备份</button>
+      <button class="footer-btn" onclick="importDataPrompt()">导入数据</button>
+      <button class="footer-btn danger" onclick="clearToday()">清空今日</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Auto-Save Toast Alert -->
+<div class="toast" id="toast">已同步保存</div>
+
+<script>
+  let currentDateStr = getTodayStr();
+  let dayData = {};
+  let cycleConfig = {
+    lastPeriod: "2026-08-20",
+    cycleLength: 28
+  };
+
+  const CYCLE_WISDOM = {
+    menstrual: [
+      "冬眠不是停滞，而是神经系统最严密的自我校准。允许系统以低能耗运转。",
+      "在这个生物静默期，撤回向外的注意力。不输出，也是一种高级的架构沉淀。",
+      "身体在完成底层的细胞出清。放下效率执念，给能量以平息的权利。"
+    ],
+    follicular: [
+      "雌激素上行重塑突触弹性；探索不是为了得出结论，而是为了拓展认知边界。",
+      "多巴胺感受器处于高敏感期：跟随那些真正需要智识严谨度的直觉去深度建构。",
+      "神经可塑性处于全月最高峰：尝试建立此前未曾连接的复杂思维模型。"
+    ],
+    ovulatory: [
+      "巅峰能量需配最高阶的过滤网。拒绝次要杂音，只把杠杆压在核心战役上。",
+      "言语与表达意图达到极值：用最短的路径完成最关键的战略同步与沟通。",
+      "生理高位运行期：保持清醒的决断力，避免因亢奋而过度承诺非核心事务。"
+    ],
+    luteal: [
+      "黄体期是天生的审计工具：审视架构漏洞，建立安全边界，不向内苛责。",
+      "孕酮主导内省与防线：你的批判锋芒不是情绪，而是剥离冗余的真实感知。",
+      "向内收敛，允许火焰向内燃烧。在外界噪点升高时，固化属于你的绝对结界。"
+    ]
+  };
+
+  function getTodayStr() {
+    const d = new Date();
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  }
+
+  function loadCycleSettings() {
+    const saved = localStorage.getItem('entp_flow_cycle_config');
+    if (saved) {
+      try {
+        cycleConfig = JSON.parse(saved);
+      } catch(e) {}
+    } else {
+      const d = new Date();
+      d.setDate(d.getDate() - 19);
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      cycleConfig.lastPeriod = `${y}-${m}-${day}`;
+      cycleConfig.cycleLength = 28;
+      localStorage.setItem('entp_flow_cycle_config', JSON.stringify(cycleConfig));
+    }
+    document.getElementById('cfgLastPeriod').value = cycleConfig.lastPeriod;
+    document.getElementById('cfgCycleLength').value = cycleConfig.cycleLength || 28;
+  }
+
+  function saveCycleSettings() {
+    cycleConfig.lastPeriod = document.getElementById('cfgLastPeriod').value;
+    cycleConfig.cycleLength = parseInt(document.getElementById('cfgCycleLength').value, 10) || 28;
+    localStorage.setItem('entp_flow_cycle_config', JSON.stringify(cycleConfig));
+    calcCyclePhase();
+    showToast("周期配置已更新");
+  }
+
+  function toggleCycleDrawer() {
+    const drawer = document.getElementById('cycleDrawer');
+    drawer.classList.toggle('open');
+  }
+
+  function calcCyclePhase() {
+    if (!cycleConfig.lastPeriod) return;
+    const start = new Date(cycleConfig.lastPeriod + "T00:00:00");
+    const current = new Date(currentDateStr + "T00:00:00");
+    const diffTime = current.getTime() - start.getTime();
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    const cycleLen = cycleConfig.cycleLength || 28;
+
+    let dayInCycle = ((diffDays % cycleLen) + cycleLen) % cycleLen + 1;
+    document.getElementById('cycleDayDisplay').innerText = `Day ${dayInCycle} / ${cycleLen}`;
+
+    let phaseKey = "";
+    let phaseName = "";
+    let phaseAdvice = "";
+    let isLuteal = false;
+
+    if (dayInCycle <= 5) {
+      phaseKey = "menstrual";
+      phaseName = "月经期 (Menstrual)";
+      phaseAdvice = "深度休整 · 补充优质电解质与慢碳 · 严禁使用黄体酮！";
+      isLuteal = false;
+    } else if (dayInCycle <= 13) {
+      phaseKey = "follicular";
+      phaseName = "卵泡期 (Follicular)";
+      phaseAdvice = "多巴胺高敏感 · 学习与策略巅峰 · 严格停用黄体酮！";
+      isLuteal = false;
+    } else if (dayInCycle === 14) {
+      phaseKey = "ovulatory";
+      phaseName = "排卵期 (Ovulatory)";
+      phaseAdvice = "雌激素峰值 · 力量与社交能量巅峰 · 准备切换至黄体期";
+      isLuteal = false;
+    } else {
+      phaseKey = "luteal";
+      phaseName = "黄体期 (Luteal)";
+      phaseAdvice = "天然孕酮主导 · 适合收敛沉淀 · 睡前涂抹 Progesterone Lotion";
+      isLuteal = true;
+    }
+
+    document.getElementById('cycleNameDisplay').innerText = phaseName;
+    document.getElementById('cycleAdviceDisplay').innerText = phaseAdvice;
+
+    const quotes = CYCLE_WISDOM[phaseKey];
+    const qIndex = (Math.abs(diffDays) + dayInCycle) % quotes.length;
+    document.getElementById('cycleWisdomDisplay').innerText = quotes[qIndex];
+
+    const warnBox = document.getElementById('progesteroneWarning');
+    if (!isLuteal) {
+      warnBox.innerHTML = `<span class="badge-warn">非黄体期警戒</span> <strong style="color:#9C1F1F;">当前阶段严格停用 Progesterone Lotion！</strong>`;
+    } else {
+      warnBox.innerHTML = `<span class="badge-rule">黄体期专属</span> <strong>Day 15–28 睡前涂抹 Progesterone Lotion</strong>`;
+    }
+  }
+
+  function parseTime(timeStr) {
+    if (!timeStr) return null;
+    const parts = timeStr.split(':');
+    return { h: parseInt(parts[0], 10), m: parseInt(parts[1], 10) };
+  }
+
+  function addHours(baseH, baseM, addH, addM = 0) {
+    let totalM = baseH * 60 + baseM + Math.round(addH * 60) + addM;
+    totalM = ((totalM % 1440) + 1440) % 1440;
+    const h = Math.floor(totalM / 60);
+    const m = totalM % 60;
+    return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+  }
+
+  function updateSchedule() {
+    const wakeVal = document.getElementById('wakeTime').value;
+    if (!wakeVal) return;
+    const { h, m } = parseTime(wakeVal);
+
+    document.getElementById('clockM1').innerText = `${addHours(h, m, 0)} ~ ${addHours(h, m, 2.5)}`;
+    document.getElementById('coffeeWindowText').innerText = `预计窗口：${addHours(h, m, 1.5)} ~ ${addHours(h, m, 2.0)}`;
+    document.getElementById('clockM2').innerText = `${addHours(h, m, 3)} ~ ${addHours(h, m, 5)}`;
+    document.getElementById('clockM3').innerText = `${addHours(h, m, 5)} ~ ${addHours(h, m, 10)}`;
+    document.getElementById('clockM4').innerText = `${addHours(h, m, 11)} ~ ${addHours(h, m, 14)}`;
+
+    const now = new Date();
+    const curMins = now.getHours() * 60 + now.getMinutes();
+    const wakeMins = h * 60 + m;
+    let diffH = (curMins - wakeMins) / 60;
+    if (diffH < 0) diffH += 24;
+
+    document.querySelectorAll('.module-card').forEach(c => c.classList.remove('active-now'));
+    if (diffH >= 0 && diffH < 2.5) {
+      document.getElementById('cardModule1').classList.add('active-now');
+    } else if (diffH >= 3 && diffH < 5) {
+      document.getElementById('cardModule2').classList.add('active-now');
+    } else if (diffH >= 5 && diffH < 10) {
+      document.getElementById('cardModule3').classList.add('active-now');
+    } else if (diffH >= 11 && diffH < 15) {
+      document.getElementById('cardModule4').classList.add('active-now');
+    }
+  }
+
+  function openMusic(platform) {
+    const song = (document.getElementById('dailyBgmInput').value || '').trim();
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+    if (platform === 'apple') {
+      if (song) {
+        const url = `https://music.apple.com/search?term=${encodeURIComponent(song)}`;
+        if (isMobile) {
+          // iOS 优先使用原生音乐应用协议唤起，彻底避开 window.open 弹窗拦截
+          window.location.href = `music://music.apple.com/search?term=${encodeURIComponent(song)}`;
+          setTimeout(() => { window.location.href = url; }, 800);
+        } else {
+          window.open(url, '_blank');
+        }
+      } else {
+        if (isMobile) {
+          window.location.href = "music://";
+          setTimeout(() => { window.location.href = "https://music.apple.com"; }, 800);
+        } else {
+          window.open("https://music.apple.com", '_blank');
+        }
+      }
+    } else if (platform === 'spotify') {
+      if (song) {
+        const webUrl = `https://open.spotify.com/search/${encodeURIComponent(song)}`;
+        if (isMobile) {
+          // Spotify 官方 App Deep Link URI Scheme：手机安装了 App 会秒级直接打开！
+          window.location.href = `spotify:search:${encodeURIComponent(song)}`;
+          setTimeout(() => { window.location.href = webUrl; }, 800);
+        } else {
+          window.open(webUrl, '_blank');
+        }
+      } else {
+        if (isMobile) {
+          window.location.href = "spotify:";
+          setTimeout(() => { window.location.href = "https://open.spotify.com"; }, 800);
+        } else {
+          window.open("https://open.spotify.com", '_blank');
+        }
+      }
+    }
+  }
+
+  function loadDay(dateStr) {
+    currentDateStr = dateStr;
+    document.getElementById('dateSelector').value = dateStr;
+    const raw = localStorage.getItem(`entp_flow_${dateStr}`);
+    dayData = raw ? JSON.parse(raw) : {
+      wakeTime: "08:00",
+      battery: 3,
+      readiness: "balanced",
+      physicalIntent: "",
+      bgm: "",
+      dailyHighlight: "",
+      dailyReflection: "",
+      breakfast: null,
+      checkboxes: {},
+      supplements: {},
+      drinks: { wine: 0, water: 0 },
+      focusBlocks: [false, false, false],
+      workoutNote: "",
+      brainDump: "",
+      tether: ["", "", ""]
+    };
+
+    document.getElementById('wakeTime').value = dayData.wakeTime || "08:00";
+    setBattery(dayData.battery || 3, false);
+    setReadiness(dayData.readiness || "balanced", false);
+    document.getElementById('physicalIntent').value = dayData.physicalIntent || "";
+    document.getElementById('dailyBgmInput').value = dayData.bgm || "";
+    document.getElementById('dailyHighlight').value = dayData.dailyHighlight || "";
+    document.getElementById('dailyReflection').value = dayData.dailyReflection || "";
+    setBreakfast(dayData.breakfast, false);
+
+    document.querySelectorAll('.app-checkbox').forEach(box => {
+      const key = box.dataset.key;
+      const isChecked = !!(dayData.checkboxes && dayData.checkboxes[key]);
+      box.classList.toggle('checked', isChecked);
+      const row = box.closest('.flow-row');
+      if (row) {
+        const body = row.querySelector('.task-body');
+        if (body) body.classList.toggle('done', isChecked);
+      }
+    });
+
+    document.querySelectorAll('.pill-tag[data-supp]').forEach(tag => {
+      const k = tag.dataset.supp;
+      const isTaken = !!(dayData.supplements && dayData.supplements[k]);
+      tag.classList.toggle('taken', isTaken);
+    });
+
+    const d = dayData.drinks || { wine: 0, water: 0 };
+    document.getElementById('wineCount').innerText = d.wine || 0;
+    document.getElementById('waterReqCount').innerText = (d.wine || 0) * 2;
+    document.getElementById('waterDrankCount').innerText = d.water || 0;
+
+    const fb = dayData.focusBlocks || [false, false, false];
+    document.getElementById('focusBlock1').checked = !!fb[0];
+    document.getElementById('focusBlock2').checked = !!fb[1];
+    document.getElementById('focusBlock3').checked = !!fb[2];
+
+    document.getElementById('workoutNote').value = dayData.workoutNote || "";
+    document.getElementById('brainDump').value = dayData.brainDump || "";
+
+    const t = dayData.tether || ["", "", ""];
+    document.getElementById('tether_text_1').value = t[0] || "";
+    document.getElementById('tether_text_2').value = t[1] || "";
+    document.getElementById('tether_text_3').value = t[2] || "";
+
+    calcCyclePhase();
+    updateSchedule();
+  }
+
+  function autoSave() {
+    dayData.wakeTime = document.getElementById('wakeTime').value;
+    dayData.physicalIntent = document.getElementById('physicalIntent').value;
+    dayData.bgm = document.getElementById('dailyBgmInput').value;
+    dayData.dailyHighlight = document.getElementById('dailyHighlight').value;
+    dayData.dailyReflection = document.getElementById('dailyReflection').value;
+    dayData.workoutNote = document.getElementById('workoutNote').value;
+    dayData.brainDump = document.getElementById('brainDump').value;
+
+    dayData.focusBlocks = [
+      document.getElementById('focusBlock1').checked,
+      document.getElementById('focusBlock2').checked,
+      document.getElementById('focusBlock3').checked
+    ];
+
+    dayData.tether = [
+      document.getElementById('tether_text_1').value,
+      document.getElementById('tether_text_2').value,
+      document.getElementById('tether_text_3').value
+    ];
+
+    localStorage.setItem(`entp_flow_${currentDateStr}`, JSON.stringify(dayData));
+    showToast();
+  }
+
+  function showToast(msg = "已同步保存") {
+    const t = document.getElementById('toast');
+    t.innerText = msg;
+    t.classList.add('show');
+    clearTimeout(window._toastTimer);
+    window._toastTimer = setTimeout(() => {
+      t.classList.remove('show');
+    }, 1200);
+  }
+
+  function setReadiness(state, save = true) {
+    dayData.readiness = state;
+    ['foggy', 'balanced', 'hyper'].forEach(s => {
+      const el = document.getElementById(`chip_${s}`);
+      if (el) el.classList.toggle('selected', s === state);
+    });
+    if (save) autoSave();
+  }
+
+  function setBattery(val, save = true) {
+    dayData.battery = val;
+    document.getElementById('batteryLabel').innerText = `${val}/5`;
+    const dots = document.querySelectorAll('#batteryDots .b-dot');
+    dots.forEach((dot, idx) => {
+      dot.classList.toggle('filled', idx < val);
+    });
+    if (save) autoSave();
+  }
+
+  function setBreakfast(opt, save = true) {
+    dayData.breakfast = opt;
+    ['A', 'B', 'C'].forEach(k => {
+      const row = document.getElementById(`bf_${k}`).closest('.breakfast-radio-row');
+      row.classList.toggle('selected', k === opt);
+    });
+    if (save) autoSave();
+  }
+
+  function addWine(n) {
+    if (!dayData.drinks) dayData.drinks = { wine: 0, water: 0 };
+    dayData.drinks.wine = Math.max(0, (dayData.drinks.wine || 0) + n);
+    document.getElementById('wineCount').innerText = dayData.drinks.wine;
+    document.getElementById('waterReqCount').innerText = dayData.drinks.wine * 2;
+    autoSave();
+  }
+
+  function addWater(n) {
+    if (!dayData.drinks) dayData.drinks = { wine: 0, water: 0 };
+    dayData.drinks.water = Math.max(0, (dayData.drinks.water || 0) + n);
+    document.getElementById('waterDrankCount').innerText = dayData.drinks.water;
+    autoSave();
+  }
+
+  function resetDrinks() {
+    dayData.drinks = { wine: 0, water: 0 };
+    document.getElementById('wineCount').innerText = 0;
+    document.getElementById('waterReqCount').innerText = 0;
+    document.getElementById('waterDrankCount').innerText = 0;
+    autoSave();
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    loadCycleSettings();
+    loadDay(getTodayStr());
+
+    document.getElementById('dateSelector').addEventListener('change', (e) => {
+      loadDay(e.target.value);
+    });
+    document.getElementById('prevDay').addEventListener('click', () => {
+      const d = new Date(currentDateStr + "T00:00:00");
+      d.setDate(d.getDate() - 1);
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      loadDay(`${y}-${m}-${day}`);
+    });
+    document.getElementById('nextDay').addEventListener('click', () => {
+      const d = new Date(currentDateStr + "T00:00:00");
+      d.setDate(d.getDate() + 1);
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      loadDay(`${y}-${m}-${day}`);
+    });
+
+    document.getElementById('setNowBtn').addEventListener('click', () => {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      document.getElementById('wakeTime').value = `${h}:${m}`;
+      updateSchedule();
+      autoSave();
+    });
+
+    document.getElementById('wakeTime').addEventListener('input', () => {
+      updateSchedule();
+      autoSave();
+    });
+
+    document.addEventListener('click', (e) => {
+      const box = e.target.closest('.app-checkbox');
+      if (box) {
+        box.classList.toggle('checked');
+        const key = box.dataset.key;
+        if (!dayData.checkboxes) dayData.checkboxes = {};
+        dayData.checkboxes[key] = box.classList.contains('checked');
+        const row = box.closest('.flow-row');
+        if (row) {
+          const body = row.querySelector('.task-body');
+          if (body) body.classList.toggle('done', box.classList.contains('checked'));
+        }
+        autoSave();
+      }
+
+      const pill = e.target.closest('.pill-tag[data-supp]');
+      if (pill) {
+        pill.classList.toggle('taken');
+        const suppKey = pill.dataset.supp;
+        if (!dayData.supplements) dayData.supplements = {};
+        dayData.supplements[suppKey] = pill.classList.contains('taken');
+        autoSave();
+      }
+    });
+
+    ['physicalIntent', 'dailyHighlight', 'dailyReflection', 'workoutNote', 'brainDump', 'tether_text_1', 'tether_text_2', 'tether_text_3'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('input', autoSave);
+    });
+
+    setInterval(updateSchedule, 60000);
+  });
+
+  function exportData() {
+    const allData = {};
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key.startsWith('entp_flow_')) {
+        allData[key] = localStorage.getItem(key);
+      }
+    }
+    const blob = new Blob([JSON.stringify(allData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `AGOs_Flow_Backup_${getTodayStr()}.json`;
+    a.click();
+    showToast("备份已导出");
+  }
+
+  function importDataPrompt() {
+    const jsonStr = prompt("请粘贴导出的 JSON 备份数据字符串：");
+    if (!jsonStr) return;
+    try {
+      const parsed = JSON.parse(jsonStr);
+      Object.keys(parsed).forEach(k => {
+        localStorage.setItem(k, parsed[k]);
+      });
+      loadCycleSettings();
+      loadDay(currentDateStr);
+      alert("数据恢复成功！");
+    } catch(e) {
+      alert("JSON 格式错误，恢复失败。");
+    }
+  }
+
+  function clearToday() {
+    if (confirm("确定要清空今天的打卡记录吗？")) {
+      localStorage.removeItem(`entp_flow_${currentDateStr}`);
+      loadDay(currentDateStr);
+      showToast("今日数据已重置");
+    }
+  }
+</script>
+
+</body>
+</html>

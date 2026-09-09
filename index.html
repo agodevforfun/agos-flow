@@ -41,6 +41,8 @@
     --winddown-bg: #EFEFF7;
     --accent-reflect: #334E68;
     --reflect-bg: #EDF2F7;
+    --accent-sleep: #2B4C6F;
+    --sleep-bg: #E8EFF7;
     --active-glow: #10B981;
     --font-serif: "Georgia", "Baskerville", serif;
     --font-sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Segoe UI", sans-serif;
@@ -69,14 +71,14 @@
     padding: 14px 16px 50px 16px;
   }
 
-  /* Clean Top Bar */
+  /* Top Bar */
   .top-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 6px 0 12px 0;
     border-bottom: 2px solid var(--text-main);
-    margin-bottom: 14px;
+    margin-bottom: 12px;
   }
   .app-title {
     font-family: var(--font-serif);
@@ -179,7 +181,7 @@
     white-space: nowrap;
   }
 
-  /* Cycle Phase & Wisdom */
+  /* Cycle Phase Calculation Display & Wisdom Box */
   .cycle-auto-box {
     background: #FAF9F6;
     border: 1px solid var(--border-color);
@@ -294,12 +296,12 @@
     border-color: #2D3732;
   }
 
-  /* DAILY SONIC ANCHOR / BGM CAPSULE BAR */
+  /* BGM CAPSULE BAR */
   .bgm-card {
     background: #FAF9F5;
     border: 1.2px solid var(--border-color);
     border-radius: 8px;
-    padding: 10px 12px 9px 12px;
+    padding: 9px 12px;
     margin-bottom: 12px;
     display: flex;
     flex-direction: column;
@@ -326,7 +328,7 @@
     font-size: 13px;
     font-weight: 500;
     color: var(--text-main);
-    padding: 3px 0;
+    padding: 2px 0;
     outline: none;
   }
   .bgm-input::placeholder {
@@ -349,7 +351,7 @@
     background: #FFF;
     border: 1px solid var(--border-color);
     border-radius: 14px;
-    padding: 3.5px 9px;
+    padding: 3px 9px;
     font-size: 11px;
     font-weight: 600;
     color: #383B38;
@@ -363,7 +365,7 @@
     transform: scale(0.97);
   }
 
-  /* MODULE 00: MORNING CALIBRATION */
+  /* MODULE 00: MORNING CALIBRATION & SLEEP AUDIT */
   .calibration-card {
     background: var(--card-bg);
     border: 1.2px solid var(--border-color);
@@ -409,6 +411,67 @@
     background: var(--calib-bg);
     color: var(--accent-calib);
     letter-spacing: 0.3px;
+  }
+
+  /* Yesterday Sleep Summary Deck */
+  .sleep-summary-deck {
+    background: #F4F7FA;
+    border: 1px solid #D2DFEB;
+    border-radius: 6px;
+    padding: 7px 10px;
+    margin-bottom: 8px;
+    font-size: 11.5px;
+    color: #243B53;
+  }
+  .sleep-stat-main {
+    font-weight: 700;
+    font-size: 12.5px;
+    color: var(--accent-sleep);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .sleep-stat-detail {
+    font-size: 10.5px;
+    color: #486581;
+    margin-top: 2px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .nap-toggle-btn {
+    font-size: 10.5px;
+    color: var(--accent-sleep);
+    text-decoration: underline;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    margin-left: auto;
+    font-weight: 600;
+  }
+
+  /* Nap / Split Sleep Drawer */
+  .nap-drawer {
+    display: none;
+    background: #FFF;
+    border: 1px dashed #BCCCDC;
+    border-radius: 5px;
+    padding: 7px 9px;
+    margin-top: 6px;
+    font-size: 11.5px;
+  }
+  .nap-drawer.open {
+    display: block;
+  }
+  .nap-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 4px;
+  }
+  .nap-row:last-child {
+    margin-bottom: 0;
   }
 
   .readiness-pills {
@@ -464,7 +527,7 @@
     outline: none;
   }
 
-  /* BRAIN DUMP & TETHER CANVAS (PLACED IN FRONT) */
+  /* BRAIN DUMP & TETHER CANVAS (IN FRONT) */
   .canvas-card {
     background: var(--card-bg);
     border: 1.2px solid var(--border-color);
@@ -495,7 +558,7 @@
   }
   .dump-textarea {
     width: 100%;
-    height: 90px;
+    height: 85px;
     background-color: #FAF9F6;
     background-image: radial-gradient(#C4BFB2 0.85px, transparent 0.85px);
     background-size: 14px 14px;
@@ -723,6 +786,36 @@
     border-radius: 50%;
   }
 
+  /* Custom Extra Meal / Other Food Input */
+  .custom-food-row {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 5px;
+    padding-top: 4px;
+    border-top: 1px dashed #DDD8CD;
+  }
+  .custom-food-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #795738;
+    white-space: nowrap;
+  }
+  .custom-food-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    border-bottom: 1px dotted #A8A49A;
+    font-size: 12px;
+    color: var(--text-main);
+    outline: none;
+    padding: 1px 0;
+  }
+  .custom-food-input::placeholder {
+    color: #9C9F9D;
+    font-style: italic;
+  }
+
   .pill-group {
     display: flex;
     flex-wrap: wrap;
@@ -790,7 +883,57 @@
     cursor: pointer;
   }
 
-  /* DAILY REFLECTION & HIGHLIGHT CARD (PLACED AT END) */
+  /* LATE NIGHT SNACK & FASTING ANCHOR CARD (NEW) */
+  .snack-card {
+    background: #FAF7F5;
+    border: 1px solid #E2D3CA;
+    border-radius: 6px;
+    padding: 8px 10px;
+    margin-top: 8px;
+    font-size: 12px;
+  }
+  .snack-head {
+    font-weight: 700;
+    color: #8C4320;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 5px;
+  }
+  .snack-input-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 4px;
+  }
+  .snack-time-input {
+    border: 1px solid #D5C2B6;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 12px;
+    background: #FFF;
+    outline: none;
+  }
+
+  /* SLEEP TIMERS SETUP CARD (BEFORE BED) */
+  .sleep-setup-card {
+    background: #F3F7FA;
+    border: 1px solid #C8D7E6;
+    border-radius: 6px;
+    padding: 8px 10px;
+    margin-top: 8px;
+    font-size: 12px;
+  }
+  .sleep-setup-head {
+    font-weight: 700;
+    color: var(--accent-sleep);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 6px;
+  }
+
+  /* DAILY REFLECTION & HIGHLIGHT */
   .reflection-card {
     background: var(--card-bg);
     border: 1.2px solid var(--border-color);
@@ -1020,7 +1163,7 @@
     </div>
   </div>
 
-  <!-- DAILY SONIC ANCHOR / BGM CAPSULE BAR (NON-OVERFLOW DEEP LINK) -->
+  <!-- DAILY SONIC ANCHOR / BGM CAPSULE BAR -->
   <div class="bgm-card">
     <div class="bgm-row-top">
       <span class="bgm-icon">🎧</span>
@@ -1037,17 +1180,41 @@
     </div>
   </div>
 
-  <!-- MODULE 00: 晨间自驱对账与体感锚定 (CALIBRATION) -->
+  <!-- MODULE 00: 晨间自驱对账、睡眠结算与体感锚定 -->
   <div class="calibration-card">
     <div class="calib-header">
       <div class="calib-title-group">
         <span class="calib-num">00</span>
         <div>
-          <span class="calib-title">晨间自驱对账与体感锚定 (Calibration)</span>
-          <div class="calib-subtitle">Tuning the biological instrument before deep work</div>
+          <span class="calib-title">晨间对账与体感锚定 (Calibration)</span>
+          <div class="calib-subtitle">Tuning biological instrument &amp; Sleep Audit</div>
         </div>
       </div>
       <span class="calib-badge">WAKE ANCHOR</span>
+    </div>
+
+    <!-- Yesterday Sleep & Fasting Summary Display -->
+    <div class="sleep-summary-deck">
+      <div style="display:flex; align-items:center; justify-content:space-between;">
+        <span class="sleep-stat-main" id="sleepSummaryText">🌙 昨夜睡眠：正在计算...</span>
+        <button class="nap-toggle-btn" onclick="toggleNapDrawer()">+ 回笼觉/小憩</button>
+      </div>
+      <div class="sleep-stat-detail" id="sleepDetailText">
+        <span>主睡眠: --</span> <span>在床: --</span> <span>潜伏期: --</span> <span>夜间断食: --</span>
+      </div>
+
+      <!-- Nap / Split Sleep Drawer -->
+      <div class="nap-drawer" id="napDrawer">
+        <div class="nap-row">
+          <span>回笼觉/小憩时段：</span>
+          <input type="time" id="napStart" class="snack-time-input" onchange="autoSave()">
+          <span>至</span>
+          <input type="time" id="napEnd" class="snack-time-input" onchange="autoSave()">
+        </div>
+        <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">
+          * 如 07:30 醒后上厕所又睡到 10:00，填写 07:45~10:00，系统将自动合并累计真实睡眠时长。
+        </div>
+      </div>
     </div>
 
     <div style="font-size:11px; font-weight:600; color:#5A5248;">
@@ -1071,7 +1238,7 @@
     </div>
   </div>
 
-  <!-- MODULE 00+: BRAIN DUMP & TETHER (MOVED TO FRONT) -->
+  <!-- MODULE 00+: BRAIN DUMP & TETHER (IN FRONT) -->
   <div class="canvas-card">
     <div class="canvas-head-clean">
       <span class="canvas-title-main">💡 Brain Dump · 灵感与闪念倾泻区</span>
@@ -1124,7 +1291,7 @@
     <div class="flow-row">
       <div class="app-checkbox" data-key="m1_breakfast"></div>
       <div class="task-body">
-        <strong>醒后 1h+ 黄金轻早餐（胃口 3 选 1 · 保持清淡，不配刺激性药片）：</strong>
+        <strong>醒后 1h+ 黄金轻早餐（参考 3 选 1 · 保持清淡，不配刺激性药片）：</strong>
         <div class="sub-panel">
           <div class="breakfast-radio-row" onclick="setBreakfast('A')">
             <div class="breakfast-radio-dot" id="bf_A"></div>
@@ -1137,6 +1304,12 @@
           <div class="breakfast-radio-row" onclick="setBreakfast('C')">
             <div class="breakfast-radio-dot" id="bf_C"></div>
             <div><strong>C 甜口清库</strong>：无糖希腊酸奶 + 熟透柿子/香蕉 + Super Seed Blend</div>
+          </div>
+          
+          <!-- Custom Extra Food -->
+          <div class="custom-food-row">
+            <span class="custom-food-label">🍳 自选/其他实吃：</span>
+            <input type="text" id="breakfastCustom" class="custom-food-input" placeholder="记录实际吃的其他食物或备注..." oninput="autoSave()">
           </div>
         </div>
       </div>
@@ -1176,6 +1349,10 @@
       <div class="app-checkbox" data-key="m2_preworkout"></div>
       <div class="task-body">
         <strong>练前 1 小时 (糖原充沛)：</strong> 冷藏烤地瓜半个 / 或香蕉 1 根 + 原味坚果少许
+        <div class="custom-food-row" style="margin-top:3px; border:none; padding:0;">
+          <span class="custom-food-label" style="font-size:10.5px;">🍌 实际加餐：</span>
+          <input type="text" id="preworkoutCustom" class="custom-food-input" placeholder="如吃其他碳水/坚果量..." oninput="autoSave()">
+        </div>
       </div>
     </div>
 
@@ -1203,8 +1380,11 @@
           <span class="pill-tag" data-supp="supp_move_free">Move Free 氨糖软骨素 1–2粒</span>
           <span class="pill-tag" data-supp="supp_calcium_d3">Garden of Life 钙镁 1–2粒</span>
         </div>
-        <div style="font-size:10.5px; color:var(--text-muted); margin-top:3px;">
-          • 鱼油油脂协助钙片 D3/K2 吸收；Move Free 随肉食消化不烧心；练后 30m 内喝 MBS 蛋白粉。
+        
+        <!-- Custom Lunch Meal -->
+        <div class="custom-food-row" style="margin-top:6px;">
+          <span class="custom-food-label">🥩 今日午餐实吃：</span>
+          <input type="text" id="lunchCustom" class="custom-food-input" placeholder="记录今天中午吃了什么大餐/主食/肉类..." oninput="autoSave()">
         </div>
       </div>
     </div>
@@ -1228,8 +1408,11 @@
       <div class="task-body">
         <strong style="color:var(--accent-focus);">⚡ 状态 A：高能产出 / 认知游荡期 (代码 · 策略 · 深度构建)</strong>
         <div class="sub-panel" style="background:#F4F8F5; border-color:#C1D9CA; margin-top:4px;">
-          <div>▸ <strong>GoStak 舱装填</strong>：[无盐坚果] ⏐ [Chomps 肉干] ⏐ [冻干草莓/85%+黑巧]</div>
-          <div style="margin-top:3px;">▸ <strong>应急便携</strong>：出门顺手抓白煮蛋 1 枚或香蕉（切断脑雾枯竭）</div>
+          <div>▸ <strong>GoStak 舱装填参考</strong>：[无盐坚果] ⏐ [Chomps 肉干] ⏐ [冻干草莓/85%+黑巧]</div>
+          <div class="custom-food-row" style="margin-top:3px; border:none; padding:0;">
+            <span class="custom-food-label" style="font-size:10.5px; color:#23593D;">🥜 下午实际补给：</span>
+            <input type="text" id="focusSnackCustom" class="custom-food-input" placeholder="吃了什么坚果/零食/水果..." oninput="autoSave()">
+          </div>
         </div>
         <div style="display:flex; align-items:center; gap:8px; margin-top:6px;">
           <span style="font-size:11.5px; font-weight:600; color:#27563E;">深度专注块打卡：</span>
@@ -1262,12 +1445,12 @@
     </div>
   </div>
 
-  <!-- MODULE 04: 神经制动阀与深度降落 -->
+  <!-- MODULE 04: 神经制动阀、深夜进食与睡眠准备 -->
   <div class="module-card m-winddown" id="cardModule4">
     <div class="card-top-row">
       <div class="module-tag-left">
         <span class="module-num">04</span>
-        <span class="module-title">神经制动阀与深度降落</span>
+        <span class="module-title">神经降落、晚餐与睡前锚定</span>
         <span class="active-badge-pill">ACTIVE NOW</span>
       </div>
       <div class="module-top-right">
@@ -1280,10 +1463,28 @@
       <div class="app-checkbox" data-key="m4_dinner"></div>
       <div class="task-body">
         <strong>晚餐充能：</strong> 高蛋白正餐 + 冰箱冷藏烤地瓜（抗性淀粉平稳整夜糖原，防夜间惊醒）
+        <div class="custom-food-row">
+          <span class="custom-food-label">🥗 今日晚餐实吃：</span>
+          <input type="text" id="dinnerCustom" class="custom-food-input" placeholder="记录实际吃的晚餐内容..." oninput="autoSave()">
+        </div>
       </div>
     </div>
 
-    <div class="flow-row">
+    <!-- LATE NIGHT SNACK & LAST MEAL TRACKER (NEW) -->
+    <div class="snack-card">
+      <div class="snack-head">
+        <span>🌙 深夜加餐 / 最后一次吃东西 (Last Intake)</span>
+        <span style="font-size:10px; font-weight:normal; color:#783F15;">决定夜间胰岛素与深度睡眠</span>
+      </div>
+      <div class="snack-input-row">
+        <span>进食时刻：</span>
+        <input type="time" id="lastSnackTime" class="snack-time-input" onchange="autoSave()">
+        <span style="margin-left:6px;">摄入内容：</span>
+        <input type="text" id="lastSnackContent" class="custom-food-input" placeholder="如 2个白煮蛋 + 20g 坚果..." oninput="autoSave()">
+      </div>
+    </div>
+
+    <div class="flow-row" style="margin-top:8px;">
       <div class="app-checkbox" data-key="m4_sensory"></div>
       <div class="task-body">
         <strong>多巴胺感官降噪 (Sensory Reset)：</strong> 两片优质芝士 + 1 杯红酒
@@ -1314,15 +1515,26 @@
       </div>
     </div>
 
-    <div class="flow-row">
-      <div class="app-checkbox" data-key="m4_boundary"></div>
-      <div class="task-body">
-        <strong>降落安全结界：</strong> 切断高强度逻辑战略，切换暖光 (&lt;2700K)，进入非审判安全区。
+    <!-- SLEEP TIME TRACKING INPUT (NEW) -->
+    <div class="sleep-setup-card">
+      <div class="sleep-setup-head">
+        <span>🛏 睡眠时间记录 (Sleep Timing)</span>
+        <span style="font-size:10px; font-weight:normal; color:#486581;">自动计入明日睡眠分析</span>
+      </div>
+      <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+        <div>
+          <span>几点躺上床：</span>
+          <input type="time" id="bedTime" class="snack-time-input" onchange="autoSave()">
+        </div>
+        <div>
+          <span>大概几点睡着：</span>
+          <input type="time" id="sleepTime" class="snack-time-input" onchange="autoSave()">
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- MODULE 05: DAILY REFLECTION & HIGHLIGHT (NEW SECTION AT THE END) -->
+  <!-- MODULE 05: DAILY REFLECTION & HIGHLIGHT -->
   <div class="reflection-card">
     <div class="reflect-head">
       <div class="reflect-title-group">
@@ -1403,6 +1615,102 @@
     const m = String(d.getMonth() + 1).padStart(2, '0');
     const day = String(d.getDate()).padStart(2, '0');
     return `${y}-${m}-${day}`;
+  }
+
+  function getPrevDateStr(dateStr) {
+    const d = new Date(dateStr + "T00:00:00");
+    d.setDate(d.getDate() - 1);
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  }
+
+  function toggleNapDrawer() {
+    document.getElementById('napDrawer').classList.toggle('open');
+  }
+
+  // Cross-day Sleep & Fasting Calculation Engine
+  function calculateSleepAndFasting() {
+    const prevDateStr = getPrevDateStr(currentDateStr);
+    const prevRaw = localStorage.getItem(`entp_flow_${prevDateStr}`);
+    let prevData = prevRaw ? JSON.parse(prevRaw) : null;
+
+    const curWakeTime = document.getElementById('wakeTime').value;
+    const napStart = document.getElementById('napStart').value;
+    const napEnd = document.getElementById('napEnd').value;
+
+    let napMinutes = 0;
+    if (napStart && napEnd) {
+      const ns = parseTime(napStart);
+      const ne = parseTime(napEnd);
+      let diffM = (ne.h * 60 + ne.m) - (ns.h * 60 + ns.m);
+      if (diffM < 0) diffM += 1440;
+      napMinutes = diffM;
+    }
+
+    if (!prevData || !prevData.sleepTime) {
+      // Fallback: If no previous day sleep record
+      if (napMinutes > 0) {
+        const nh = Math.floor(napMinutes / 60);
+        const nm = napMinutes % 60;
+        document.getElementById('sleepSummaryText').innerText = `🌙 昨夜无睡前记录 · 回笼觉: ${nh}h ${nm}m`;
+      } else {
+        document.getElementById('sleepSummaryText').innerText = `🌙 昨夜睡眠：前一日未填睡着时间 (可在前一日补记)`;
+      }
+      document.getElementById('sleepDetailText').innerHTML = `<span>夜间断食: --</span> <span>在床潜伏期: --</span>`;
+      return;
+    }
+
+    // Previous day: bedTime, sleepTime, lastSnackTime
+    const sTime = parseTime(prevData.sleepTime);
+    const bTime = prevData.bedTime ? parseTime(prevData.bedTime) : sTime;
+    const wTime = parseTime(curWakeTime);
+
+    // Main sleep duration (between prev sleepTime and cur wakeTime)
+    let mainSleepMin = (wTime.h * 60 + wTime.m) - (sTime.h * 60 + sTime.m);
+    if (mainSleepMin < 0) mainSleepMin += 1440;
+
+    // Total In-bed duration
+    let inBedMin = (wTime.h * 60 + wTime.m) - (bTime.h * 60 + bTime.m);
+    if (inBedMin < 0) inBedMin += 1440;
+
+    // Latency
+    let latencyMin = (sTime.h * 60 + sTime.m) - (bTime.h * 60 + bTime.m);
+    if (latencyMin < 0) latencyMin += 1440;
+
+    // Total cumulative sleep
+    let totalSleepMin = mainSleepMin + napMinutes;
+    let totalH = Math.floor(totalSleepMin / 60);
+    let totalM = totalSleepMin % 60;
+
+    let mainH = Math.floor(mainSleepMin / 60);
+    let mainM = mainSleepMin % 60;
+
+    // Efficiency
+    let totalInBedWithNap = inBedMin + napMinutes;
+    let efficiency = totalInBedWithNap > 0 ? Math.round((totalSleepMin / totalInBedWithNap) * 100) : 100;
+    if (efficiency > 100) efficiency = 100;
+
+    // Fasting calculation
+    let fastingStr = "--";
+    if (prevData.lastSnackTime) {
+      const snackT = parseTime(prevData.lastSnackTime);
+      let fastMin = (wTime.h * 60 + wTime.m) - (snackT.h * 60 + snackT.m);
+      if (fastMin < 0) fastMin += 1440;
+      let fh = Math.floor(fastMin / 60);
+      let fm = fastMin % 60;
+      fastingStr = `${fh}h ${fm}m`;
+    }
+
+    let napBadge = napMinutes > 0 ? ` (含回笼觉 ${Math.floor(napMinutes/60)}h ${napMinutes%60}m)` : "";
+    document.getElementById('sleepSummaryText').innerText = `🌙 昨夜总睡眠: ${totalH}h ${totalM}m${napBadge} · 效率 ${efficiency}%`;
+    document.getElementById('sleepDetailText').innerHTML = `
+      <span>主睡眠: ${mainH}h ${mainM}m</span>
+      <span>在床: ${Math.floor(totalInBedWithNap/60)}h ${totalInBedWithNap%60}m</span>
+      <span>潜伏期: ${latencyMin}m</span>
+      <span>夜间断食: ${fastingStr}</span>
+    `;
   }
 
   function loadCycleSettings() {
@@ -1492,7 +1800,7 @@
   }
 
   function parseTime(timeStr) {
-    if (!timeStr) return null;
+    if (!timeStr) return { h: 0, m: 0 };
     const parts = timeStr.split(':');
     return { h: parseInt(parts[0], 10), m: parseInt(parts[1], 10) };
   }
@@ -1532,49 +1840,32 @@
     } else if (diffH >= 11 && diffH < 15) {
       document.getElementById('cardModule4').classList.add('active-now');
     }
+
+    calculateSleepAndFasting();
   }
 
+  // Isolated safe dispatcher for external apps (prevents iOS freezing)
   function openMusic(platform) {
     const song = (document.getElementById('dailyBgmInput').value || '').trim();
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
+    let targetUrl = "";
     if (platform === 'apple') {
-      if (song) {
-        const url = `https://music.apple.com/search?term=${encodeURIComponent(song)}`;
-        if (isMobile) {
-          // iOS 优先使用原生音乐应用协议唤起，彻底避开 window.open 弹窗拦截
-          window.location.href = `music://music.apple.com/search?term=${encodeURIComponent(song)}`;
-          setTimeout(() => { window.location.href = url; }, 800);
-        } else {
-          window.open(url, '_blank');
-        }
-      } else {
-        if (isMobile) {
-          window.location.href = "music://";
-          setTimeout(() => { window.location.href = "https://music.apple.com"; }, 800);
-        } else {
-          window.open("https://music.apple.com", '_blank');
-        }
-      }
+      targetUrl = song ? `music://music.apple.com/search?term=${encodeURIComponent(song)}` : "music://";
+      if (!isMobile) targetUrl = song ? `https://music.apple.com/search?term=${encodeURIComponent(song)}` : "https://music.apple.com";
     } else if (platform === 'spotify') {
-      if (song) {
-        const webUrl = `https://open.spotify.com/search/${encodeURIComponent(song)}`;
-        if (isMobile) {
-          // Spotify 官方 App Deep Link URI Scheme：手机安装了 App 会秒级直接打开！
-          window.location.href = `spotify:search:${encodeURIComponent(song)}`;
-          setTimeout(() => { window.location.href = webUrl; }, 800);
-        } else {
-          window.open(webUrl, '_blank');
-        }
-      } else {
-        if (isMobile) {
-          window.location.href = "spotify:";
-          setTimeout(() => { window.location.href = "https://open.spotify.com"; }, 800);
-        } else {
-          window.open("https://open.spotify.com", '_blank');
-        }
-      }
+      targetUrl = song ? `spotify:search:${encodeURIComponent(song)}` : "spotify:";
+      if (!isMobile) targetUrl = song ? `https://open.spotify.com/search/${encodeURIComponent(song)}` : "https://open.spotify.com";
     }
+
+    // Isolated anchor trigger
+    const link = document.createElement('a');
+    link.href = targetUrl;
+    link.rel = "external";
+    if (!isMobile) link.target = "_blank";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
 
   function loadDay(dateStr) {
@@ -1587,14 +1878,25 @@
       readiness: "balanced",
       physicalIntent: "",
       bgm: "",
+      napStart: "",
+      napEnd: "",
+      breakfast: null,
+      breakfastCustom: "",
+      preworkoutCustom: "",
+      workoutNote: "",
+      lunchCustom: "",
+      focusSnackCustom: "",
+      dinnerCustom: "",
+      lastSnackTime: "",
+      lastSnackContent: "",
+      bedTime: "",
+      sleepTime: "",
       dailyHighlight: "",
       dailyReflection: "",
-      breakfast: null,
       checkboxes: {},
       supplements: {},
       drinks: { wine: 0, water: 0 },
       focusBlocks: [false, false, false],
-      workoutNote: "",
       brainDump: "",
       tether: ["", "", ""]
     };
@@ -1604,9 +1906,30 @@
     setReadiness(dayData.readiness || "balanced", false);
     document.getElementById('physicalIntent').value = dayData.physicalIntent || "";
     document.getElementById('dailyBgmInput').value = dayData.bgm || "";
+    document.getElementById('napStart').value = dayData.napStart || "";
+    document.getElementById('napEnd').value = dayData.napEnd || "";
+    if (dayData.napStart || dayData.napEnd) {
+      document.getElementById('napDrawer').classList.add('open');
+    } else {
+      document.getElementById('napDrawer').classList.remove('open');
+    }
+
+    // Meal and Snack Custom fields
+    setBreakfast(dayData.breakfast, false);
+    document.getElementById('breakfastCustom').value = dayData.breakfastCustom || "";
+    document.getElementById('preworkoutCustom').value = dayData.preworkoutCustom || "";
+    document.getElementById('workoutNote').value = dayData.workoutNote || "";
+    document.getElementById('lunchCustom').value = dayData.lunchCustom || "";
+    document.getElementById('focusSnackCustom').value = dayData.focusSnackCustom || "";
+    document.getElementById('dinnerCustom').value = dayData.dinnerCustom || "";
+    document.getElementById('lastSnackTime').value = dayData.lastSnackTime || "";
+    document.getElementById('lastSnackContent').value = dayData.lastSnackContent || "";
+    document.getElementById('bedTime').value = dayData.bedTime || "";
+    document.getElementById('sleepTime').value = dayData.sleepTime || "";
+
     document.getElementById('dailyHighlight').value = dayData.dailyHighlight || "";
     document.getElementById('dailyReflection').value = dayData.dailyReflection || "";
-    setBreakfast(dayData.breakfast, false);
+    document.getElementById('brainDump').value = dayData.brainDump || "";
 
     document.querySelectorAll('.app-checkbox').forEach(box => {
       const key = box.dataset.key;
@@ -1635,9 +1958,6 @@
     document.getElementById('focusBlock2').checked = !!fb[1];
     document.getElementById('focusBlock3').checked = !!fb[2];
 
-    document.getElementById('workoutNote').value = dayData.workoutNote || "";
-    document.getElementById('brainDump').value = dayData.brainDump || "";
-
     const t = dayData.tether || ["", "", ""];
     document.getElementById('tether_text_1').value = t[0] || "";
     document.getElementById('tether_text_2').value = t[1] || "";
@@ -1651,9 +1971,22 @@
     dayData.wakeTime = document.getElementById('wakeTime').value;
     dayData.physicalIntent = document.getElementById('physicalIntent').value;
     dayData.bgm = document.getElementById('dailyBgmInput').value;
+    dayData.napStart = document.getElementById('napStart').value;
+    dayData.napEnd = document.getElementById('napEnd').value;
+
+    dayData.breakfastCustom = document.getElementById('breakfastCustom').value;
+    dayData.preworkoutCustom = document.getElementById('preworkoutCustom').value;
+    dayData.workoutNote = document.getElementById('workoutNote').value;
+    dayData.lunchCustom = document.getElementById('lunchCustom').value;
+    dayData.focusSnackCustom = document.getElementById('focusSnackCustom').value;
+    dayData.dinnerCustom = document.getElementById('dinnerCustom').value;
+    dayData.lastSnackTime = document.getElementById('lastSnackTime').value;
+    dayData.lastSnackContent = document.getElementById('lastSnackContent').value;
+    dayData.bedTime = document.getElementById('bedTime').value;
+    dayData.sleepTime = document.getElementById('sleepTime').value;
+
     dayData.dailyHighlight = document.getElementById('dailyHighlight').value;
     dayData.dailyReflection = document.getElementById('dailyReflection').value;
-    dayData.workoutNote = document.getElementById('workoutNote').value;
     dayData.brainDump = document.getElementById('brainDump').value;
 
     dayData.focusBlocks = [
@@ -1669,6 +2002,7 @@
     ];
 
     localStorage.setItem(`entp_flow_${currentDateStr}`, JSON.stringify(dayData));
+    calculateSleepAndFasting();
     showToast();
   }
 
@@ -1796,7 +2130,13 @@
       }
     });
 
-    ['physicalIntent', 'dailyHighlight', 'dailyReflection', 'workoutNote', 'brainDump', 'tether_text_1', 'tether_text_2', 'tether_text_3'].forEach(id => {
+    // Auto-save listeners on all text inputs
+    [
+      'physicalIntent', 'dailyBgmInput', 'breakfastCustom', 'preworkoutCustom', 
+      'workoutNote', 'lunchCustom', 'focusSnackCustom', 'dinnerCustom', 
+      'lastSnackContent', 'dailyHighlight', 'dailyReflection', 'brainDump', 
+      'tether_text_1', 'tether_text_2', 'tether_text_3'
+    ].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.addEventListener('input', autoSave);
     });

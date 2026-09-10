@@ -1149,18 +1149,19 @@
     gap: 4px;
     margin-bottom: 3px;
   }
-  .evening-ref-textarea {
+  .evening-ref-textarea, .dump-textarea {
     width: 100%;
-    height: 65px;
+    min-height: 75px;
     background-color: #FAF9F6;
     border: 1px dashed #CBD5E1;
     border-radius: 5px;
-    padding: 6px 8px;
+    padding: 7px 9px;
     font-family: var(--font-sans);
     font-size: 12.5px;
     color: var(--text-main);
     outline: none;
-    resize: vertical;
+    resize: none;
+    overflow: hidden;
   }
 
   /* Bottom Utility Bar */
@@ -2366,7 +2367,7 @@
       ],
       generationConfig: {
         temperature: 0.7,
-        maxOutputTokens: 800
+        maxOutputTokens: 1500
       }
     };
 
@@ -2396,12 +2397,11 @@
     resultBox.style.display = "block";
     resultBox.innerText = "⚡ 正在解构今日宏量营养素、胰岛素曲线与药理代谢协同...";
 
-    const sysPrompt = `你是一位冷峻、硬核的代谢内分泌与精准营养学专家。你的受众是一位高智识的 ENTP 生物黑客。
-禁止任何公关辞令、禁止提供显而易见的常识建议（如“多吃蔬菜水果多喝水”）、禁止使用“总之”或“综上所述”等废话。
-请直接分三段硬核输出（控制在 250 字以内）：
-1.【血糖与胰岛素曲线评估】：分析全天碳水时序、深夜加餐（若有）对夜间皮质醇/生长激素和空腹断食的影响；结合其 GLP-1 注射状态（若有激活，说明其胃排空延缓、胰岛素平稳度增强，提醒防恶心脱水）。
-2.【补剂与微量元素吸收协同】：评估其正餐油脂对鱼油、D3、Move Free 的包裹缓冲效果；若有抗敏药/脱敏针，提示其代谢负荷。
-3.【明日能量微调】：给出 1-2 条精准且具生物学逻辑的操作性微调指令。`;
+    const sysPrompt = `你是一位聪明、温暖且兼具深厚药理与营养学素养的健康合伙人。
+请用清晰、流畅、通俗易懂且带有鼓励性质的口吻，为用户梳理今天的饮食与代谢状态（字数在 250-350 字左右）：
+1.【今日营养与血糖反馈】：肯定今天做得好的地方（例如蛋白质、坚果或慢碳的搭配如何稳定了能量），通俗地分析深夜加餐或血糖平稳度。如果有 GLP-1 注射或抗敏药物，友好地提醒其水分补充与胃肠舒适。
+2.【补剂吸收小贴士】：用轻松的方式点评今天油脂对脂溶性补剂（鱼油/D3）的协同效果。
+3.【明日轻松建议】：给出 1-2 条简单、好上手、立竿见影的明天饮食或休息小建议，让人看了觉得被支持、很有动力。`;
 
     const userPrompt = `
 - 生理周期阶段：${document.getElementById('cycleNameDisplay').innerText} (${document.getElementById('cycleDayDisplay').innerText})
@@ -2435,11 +2435,10 @@
     resultBox.style.display = "block";
     resultBox.innerText = "⚡ 正在重构今日认知流转、行为架构与心流锚点...";
 
-    const sysPrompt = `你是一位深邃、敏锐、具备哲学与复杂自组织系统洞察力的智识协作者（Thought Partner）。
-面对一位在旧金山探索科技边界与高维自律的 ENTP，拒绝任何廉价赞美或假大空打气。
-基于其全天精力觉知、训练意图、Brain Dump 碎片、核心待办完成度与夜间反思，输出一段精练而具穿透力的闭环洞察（200-280 字左右）：
-1.【神经架构与认知流动】：提炼其今天在理性建构与狂想游荡之间的张力与模式。
-2.【夜间降落与安全结界】：针对其夜间反思或未竟之事，提供一个客观卸载认知负荷的模型，允许今日彻底归档，平息中枢神经火焰。`;
+    const sysPrompt = `你是一位懂她、睿智、充满人文关怀与智识灵感的知心伙伴（Thought Partner）。
+请结合她今天的反思、高光时刻、Brain Dump 杂念以及精力状态，写一段温暖、优美且充满力量的每日复盘共鸣（250-350 字左右）：
+1.【今日能量与心流肯定】：捕捉她今天在探索艺术方案或脑力运转中的闪光点，给予真诚的认可与欣赏，抚平白天的精神消耗。
+2.【夜间卸载与温柔归档】：用温柔、笃定的语调帮她把未竟的事务和杂绪轻轻打包放下，告诉她“今天已经做得很棒了，允许自己安心进入深度睡眠”，并附带一句极具质感和鼓励的 inspirational quote。`;
 
     const userPrompt = `
 - 生理周期阶段：${document.getElementById('cycleNameDisplay').innerText} (${document.getElementById('cycleDayDisplay').innerText})
@@ -2468,6 +2467,10 @@
   }
 
   document.addEventListener('DOMContentLoaded', () => {
+
+    // 初始化自适应文本框高度
+    document.querySelectorAll('textarea').forEach(el => autoResizeTextarea(el));
+
     loadMasterSettings();
     loadDay(getTodayStr());
 
@@ -2585,6 +2588,19 @@
       showToast("今日数据已重置");
     }
   }
+
+    // 自动自适应调整文本框高度
+    function autoResizeTextarea(el) {
+      el.style.height = 'auto';
+      el.style.height = (el.scrollHeight + 2) + 'px';
+    }
+
+    document.addEventListener('input', (e) => {
+      if (e.target.tagName.toLowerCase() === 'textarea') {
+        autoResizeTextarea(e.target);
+      }
+    });
+
 </script>
 
 </body>

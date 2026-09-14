@@ -1349,17 +1349,12 @@
         <span>主睡眠: --</span> <span>在床: --</span> <span>潜伏期: --</span> <span>夜间断食: --</span>
       </div>
 
-      <!-- Nap / Split Sleep Drawer -->
+      <!-- Nap / Multi-Segment Split Sleep Drawer (NEW) -->
       <div class="nap-drawer" id="napDrawer">
-        <div class="nap-row">
-          <span>回笼觉时段：</span>
-          <input type="time" id="napStart" class="snack-time-input" onchange="autoSave()">
-          <span>至</span>
-          <input type="time" id="napEnd" class="snack-time-input" onchange="autoSave()">
-          <button type="button" class="nap-clear-btn" onclick="clearNap()" title="删除此段记录">✕ 删除</button>
-        </div>
-        <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">
-          * 填入结束时间后，<strong>全天各个代谢与专注时钟将自动以回笼觉醒来时间为基准顺延</strong>。
+        <div id="napSegmentsContainer"></div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:5px;">
+          <button type="button" class="quick-wake-btn" onclick="addNapSegment()" style="font-size:11px; padding:2px 8px;">+ 增加一段回笼觉/小憩</button>
+          <span style="font-size:10px; color:var(--text-muted);">* 时钟自动按最后醒来时间顺延</span>
         </div>
       </div>
     </div>
@@ -1665,14 +1660,23 @@
     <div class="flow-row" style="margin-top:8px;">
       <div class="app-checkbox" data-key="m4_sensory"></div>
       <div class="task-body">
-        <strong>多巴胺感官降噪 (Sensory Reset)：</strong> 两片优质芝士 + 1 杯红酒
+        <strong>感官降噪与酒精对冲 (Alcohol & Hydration Protocol)：</strong>
+        <div style="display:flex; flex-wrap:wrap; gap:5px; margin-top:4px;">
+          <span class="pill-tag" id="alc_type_wine" onclick="toggleAlcoholType('wine')">🍷 红酒/干白</span>
+          <span class="pill-tag" id="alc_type_beer" onclick="toggleAlcoholType('beer')">🍺 啤酒/精酿</span>
+          <span class="pill-tag" id="alc_type_sake" onclick="toggleAlcoholType('sake')">🍶 清酒/烈酒</span>
+          <span class="pill-tag" id="alc_type_cheese" onclick="toggleAlcoholType('cheese')">🧀 优质芝士配餐</span>
+        </div>
         <div class="drink-counter-bar">
-          <div>🍷 红酒: <span id="wineCount">0</span> 杯 ｜ 💧 需配水: <span id="waterReqCount">0</span> 杯 (实饮: <span id="waterDrankCount">0</span>)</div>
+          <div>🍻 饮酒量: <span id="alcoholStandardCount" style="font-weight:700; color:#8C3D1A;">0</span> 标准杯/罐 ｜ 💧 科学配水: <span id="waterReqCount" style="font-weight:700; color:#1C4E72;">0</span> 杯 (已饮: <span id="waterDrankCount">0</span>)</div>
           <div style="display:flex; gap:4px;">
-            <button class="drink-ctrl-btn" onclick="addWine(1)">+1 🍷</button>
+            <button class="drink-ctrl-btn" onclick="addAlcoholUnit(1)">+1 🍺/🍷</button>
             <button class="drink-ctrl-btn" onclick="addWater(1)">+1 💧</button>
             <button class="drink-ctrl-btn" onclick="resetDrinks()" style="font-size:10px;">清零</button>
           </div>
+        </div>
+        <div style="font-size:10px; color:var(--text-muted); margin-top:3px;">
+          * 1个标准饮酒单位(≈1杯红酒/1罐啤酒/1小盅清酒) 强制对冲2大杯清水，阻断夜间脱水与皮质醇惊醒。
         </div>
       </div>
     </div>
@@ -1827,6 +1831,101 @@
     document.getElementById('napDrawer').classList.toggle('open');
   }
 
+  
+  // ===================== 多段回笼觉 / 小憩系统 =====================
+  function renderNapSegments() {
+    const container = document.getElementById('napSegmentsContainer');
+    if (!container) return;
+    if (!dayData.naps) dayData.naps = [];
+    
+    // 兼容旧版 napStart / napEnd
+    if (dayData.naps.length === 0 && (dayData.napStart || dayData.napEnd)) {
+      dayData.naps.push({ start: dayData.napStart || '', end: dayData.napEnd || '' });
+      delete dayData.napStart;
+      delete dayData.napEnd;
+    }
+
+    if (dayData.naps.length === 0) {
+      container.innerHTML = '<div style="font-size:11px; color:#8C877D; margin-bottom:4px; font-style:italic;">暂无分段记录，点击下方增加一段。</div>';
+      return;
+    }
+
+    let html = '';
+    dayData.naps.forEach((nap, idx) => {
+      html += `
+        <div class="nap-row" style="margin-bottom:6px;">
+          <span style="font-size:11px; font-weight:600; color:#2B4C6F;">段落 ${idx + 1}：</span>
+          <input type="time" class="snack-time-input" value="${nap.start || ''}" onchange="updateNapSegment(${idx}, 'start', this.value)">
+          <span>至</span>
+          <input type="time" class="snack-time-input" value="${nap.end || ''}" onchange="updateNapSegment(${idx}, 'end', this.value)">
+          <button type="button" class="nap-clear-btn" onclick="removeNapSegment(${idx})">✕</button>
+        </div>
+      `;
+    });
+    container.innerHTML = html;
+  }
+
+  function addNapSegment() {
+    if (!dayData.naps) dayData.naps = [];
+    dayData.naps.push({ start: '', end: '' });
+    renderNapSegments();
+    autoSave();
+  }
+
+  function removeNapSegment(idx) {
+    if (!dayData.naps) return;
+    dayData.naps.splice(idx, 1);
+    renderNapSegments();
+    autoSave();
+  }
+
+  function updateNapSegment(idx, field, val) {
+    if (!dayData.naps || !dayData.naps[idx]) return;
+    dayData.naps[idx][field] = val;
+    autoSave();
+  }
+
+  // ===================== 训练功能维度打卡 =====================
+  function toggleWorkoutTag(type) {
+    if (!dayData.workoutTypes) dayData.workoutTypes = {};
+    dayData.workoutTypes[type] = !dayData.workoutTypes[type];
+    const el = document.querySelector(`.pill-tag[data-workout="${type}"]`);
+    if (el) el.classList.toggle('taken', dayData.workoutTypes[type]);
+    autoSave();
+  }
+
+  // ===================== 酒精与科学水合对冲 =====================
+  function toggleAlcoholType(type) {
+    if (!dayData.alcoholTypes) dayData.alcoholTypes = {};
+    dayData.alcoholTypes[type] = !dayData.alcoholTypes[type];
+    const el = document.getElementById(`alc_type_${type}`);
+    if (el) el.classList.toggle('taken', dayData.alcoholTypes[type]);
+    autoSave();
+  }
+
+  function addAlcoholUnit(n) {
+    if (!dayData.drinks) dayData.drinks = { units: 0, water: 0 };
+    dayData.drinks.units = Math.max(0, (dayData.drinks.units || 0) + n);
+    document.getElementById('alcoholStandardCount').innerText = dayData.drinks.units;
+    document.getElementById('waterReqCount').innerText = dayData.drinks.units * 2;
+    autoSave();
+  }
+
+  function addWater(n) {
+    if (!dayData.drinks) dayData.drinks = { units: 0, water: 0 };
+    dayData.drinks.water = Math.max(0, (dayData.drinks.water || 0) + n);
+    document.getElementById('waterDrankCount').innerText = dayData.drinks.water;
+    autoSave();
+  }
+
+  function resetDrinks() {
+    dayData.drinks = { units: 0, water: 0 };
+    document.getElementById('alcoholStandardCount').innerText = 0;
+    document.getElementById('waterReqCount').innerText = 0;
+    document.getElementById('waterDrankCount').innerText = 0;
+    autoSave();
+  }
+
   function toggleCycleDrawer() {
     document.getElementById('cycleDrawer').classList.toggle('open');
   }
@@ -1862,30 +1961,35 @@
     showToast("参数配置已更新");
   }
 
-  // Cross-day Sleep & Fasting Calculation Engine
+  // Cross-day Sleep & Fasting Calculation Engine (Multi-Segment Nap Support)
   function calculateSleepAndFasting() {
     const prevDateStr = getPrevDateStr(currentDateStr);
     const prevRaw = localStorage.getItem(`entp_flow_${prevDateStr}`);
     let prevData = prevRaw ? JSON.parse(prevRaw) : null;
 
     const curWakeTime = document.getElementById('wakeTime').value;
-    const napStart = document.getElementById('napStart').value;
-    const napEnd = document.getElementById('napEnd').value;
 
+    // 累加所有回笼觉片段时长
     let napMinutes = 0;
-    if (napStart && napEnd) {
-      const ns = parseTime(napStart);
-      const ne = parseTime(napEnd);
-      let diffM = (ne.h * 60 + ne.m) - (ns.h * 60 + ns.m);
-      if (diffM < 0) diffM += 1440;
-      napMinutes = diffM;
+    let validNapCount = 0;
+    if (dayData.naps && dayData.naps.length > 0) {
+      dayData.naps.forEach(nap => {
+        if (nap.start && nap.end) {
+          const ns = parseTime(nap.start);
+          const ne = parseTime(nap.end);
+          let diffM = (ne.h * 60 + ne.m) - (ns.h * 60 + ns.m);
+          if (diffM < 0) diffM += 1440;
+          napMinutes += diffM;
+          validNapCount++;
+        }
+      });
     }
 
     if (!prevData || !prevData.sleepTime) {
       if (napMinutes > 0) {
         const nh = Math.floor(napMinutes / 60);
         const nm = napMinutes % 60;
-        document.getElementById('sleepSummaryText').innerText = `🌙 昨夜无睡前记录 · 回笼觉: ${nh}h ${nm}m`;
+        document.getElementById('sleepSummaryText').innerText = `🌙 昨夜无睡前记录 · 回笼觉(${validNapCount}段): ${nh}h ${nm}m`;
       } else {
         document.getElementById('sleepSummaryText').innerText = `🌙 昨夜睡眠：前一日未填睡着时间 (可在前一日补记)`;
       }
@@ -1927,7 +2031,7 @@
       fastingStr = `${fh}h ${fm}m`;
     }
 
-    let napBadge = napMinutes > 0 ? ` (含回笼觉 ${Math.floor(napMinutes/60)}h ${napMinutes%60}m)` : "";
+    let napBadge = napMinutes > 0 ? ` (含${validNapCount}段回笼觉 +${Math.floor(napMinutes/60)}h ${napMinutes%60}m)` : "";
     document.getElementById('sleepSummaryText').innerText = `🌙 昨夜总睡眠: ${totalH}h ${totalM}m${napBadge} · 效率 ${efficiency}%`;
     document.getElementById('sleepDetailText').innerHTML = `
       <span>主睡眠: ${mainH}h ${mainM}m</span>
@@ -2004,28 +2108,26 @@
     return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
   }
 
-  function clearNap() {
-    document.getElementById('napStart').value = '';
-    document.getElementById('napEnd').value = '';
-    dayData.napStart = '';
-    dayData.napEnd = '';
-    document.getElementById('napDrawer').classList.remove('open');
-    autoSave();
-    showToast("回笼觉记录已清除");
-  }
-
   function updateSchedule() {
     const wakeVal = document.getElementById('wakeTime').value;
     if (!wakeVal) return;
 
-    // Determine Effective Awake Time:
-    // If Nap end is specified, base all relative module hours on napEnd!
-    const napStart = document.getElementById('napStart').value;
-    const napEnd = document.getElementById('napEnd').value;
+    // 智能提取全天日程的最终起飞时刻 (Latest Effective Awake Time)
+    // 遍历所有回笼觉段落，寻找最晚的结束时间作为基准
     let baseTimeStr = wakeVal;
+    let maxNapMins = -1;
 
-    if (napStart && napEnd) {
-      baseTimeStr = napEnd;
+    if (dayData.naps && dayData.naps.length > 0) {
+      dayData.naps.forEach(nap => {
+        if (nap.end) {
+          const t = parseTime(nap.end);
+          const mins = t.h * 60 + t.m;
+          if (mins > maxNapMins) {
+            maxNapMins = mins;
+            baseTimeStr = nap.end;
+          }
+        }
+      });
     }
 
     const { h, m } = parseTime(baseTimeStr);
@@ -2053,36 +2155,26 @@
       document.getElementById('cardModule4').classList.add('active-now');
     }
 
-    // Friday GLP-1 Visual Hint Check
+    // GLP-1 模块仅在周五或当天已有打卡时出现
     const curDate = new Date(currentDateStr + "T00:00:00");
     const isFriday = curDate.getDay() === 5;
     const glpCard = document.getElementById('glpCard');
     const glpBtn = document.getElementById('glpToggleBtn');
-    if (isFriday && !dayData.glpInjected) {
-      glpCard.style.borderColor = "#0D9488";
-      glpBtn.innerText = "⚡ 周五注射日 · 打卡";
+    
+    if (isFriday || dayData.glpInjected) {
+      glpCard.style.display = "block";
+      if (isFriday && !dayData.glpInjected) {
+        glpCard.style.borderColor = "#0D9488";
+        glpBtn.innerText = "⚡ 周五注射日 · 打卡";
+      } else {
+        glpCard.style.borderColor = "#99F6E4";
+        glpBtn.innerText = dayData.glpInjected ? "✓ 今日已注射 GLP-1" : "打卡注射";
+      }
     } else {
-      glpCard.style.borderColor = "#99F6E4";
-      glpBtn.innerText = dayData.glpInjected ? "✓ 今日已注射 GLP-1" : "打卡注射";
+      glpCard.style.display = "none";
     }
 
     calculateSleepAndFasting();
-  }
-
-  function toggleGLP() {
-    dayData.glpInjected = !dayData.glpInjected;
-    const btn = document.getElementById('glpToggleBtn');
-    btn.classList.toggle('active', dayData.glpInjected);
-    btn.innerText = dayData.glpInjected ? "✓ 今日已注射 GLP-1" : "打卡注射";
-    autoSave();
-  }
-
-  function toggleAllergy(type) {
-    if (!dayData.allergy) dayData.allergy = {};
-    dayData.allergy[type] = !dayData.allergy[type];
-    const el = document.getElementById(`pill_allergy_${type}` === 'pill_allergy_shot' ? 'pill_allergy_shot' : (type === 'anti' ? 'pill_antihistamine' : 'pill_montelukast'));
-    if (el) el.classList.toggle('active', dayData.allergy[type]);
-    autoSave();
   }
 
   // Safe external music dispatcher
@@ -2152,13 +2244,26 @@
     setReadiness(dayData.readiness || "balanced", false);
     document.getElementById('physicalIntent').value = dayData.physicalIntent || "";
     document.getElementById('dailyBgmInput').value = dayData.bgm || "";
-    document.getElementById('napStart').value = dayData.napStart || "";
-    document.getElementById('napEnd').value = dayData.napEnd || "";
-    if (dayData.napStart || dayData.napEnd) {
+    renderNapSegments();
+    if (dayData.naps && dayData.naps.length > 0) {
       document.getElementById('napDrawer').classList.add('open');
     } else {
       document.getElementById('napDrawer').classList.remove('open');
     }
+
+    // 训练四大维度状态恢复
+    const wt = dayData.workoutTypes || {};
+    ['strength', 'flow', 'mobility', 'cardio'].forEach(type => {
+      const el = document.querySelector(`.pill-tag[data-workout="${type}"]`);
+      if (el) el.classList.toggle('taken', !!wt[type]);
+    });
+
+    // 酒精类型状态恢复
+    const at = dayData.alcoholTypes || {};
+    ['wine', 'beer', 'sake', 'cheese'].forEach(type => {
+      const el = document.getElementById(`alc_type_${type}`);
+      if (el) el.classList.toggle('taken', !!at[type]);
+    });
 
     // Allergy
     const al = dayData.allergy || {};
@@ -2223,8 +2328,8 @@
     });
 
     const d = dayData.drinks || { wine: 0, water: 0 };
-    document.getElementById('wineCount').innerText = d.wine || 0;
-    document.getElementById('waterReqCount').innerText = (d.wine || 0) * 2;
+    document.getElementById('alcoholStandardCount').innerText = d.units || (d.wine || 0);
+    document.getElementById('waterReqCount').innerText = (d.units || (d.wine || 0)) * 2;
     document.getElementById('waterDrankCount').innerText = d.water || 0;
 
     const fb = dayData.focusBlocks || [false, false, false];
@@ -2245,8 +2350,7 @@
     dayData.wakeTime = document.getElementById('wakeTime').value;
     dayData.physicalIntent = document.getElementById('physicalIntent').value;
     dayData.bgm = document.getElementById('dailyBgmInput').value;
-    dayData.napStart = document.getElementById('napStart').value;
-    dayData.napEnd = document.getElementById('napEnd').value;
+    // naps 实时由 updateNapSegment / addNapSegment 存储
 
     dayData.allergyNote = document.getElementById('allergyNote').value;
     dayData.glpDoseNote = document.getElementById('glpDoseNote').value;
@@ -2413,19 +2517,86 @@
 2.【吸收与时序优化】：指出补剂服用环境或时序上的关键注意点（如油脂包裹、矿物质吸收）。
 3.【即时/后续执行锚点】：基于当前时间点，给出 1-2 条接下来最立竿见影、好操作的饮食或能量微调方案。`;
 
+
+    // 动态提取并解析所有复选框与摄入事实
+    const chk = dayData.checkboxes || {};
+    const supps = dayData.supplements || {};
+
+    let intakeSummary = [];
+    if (chk.m1_light_psyllium) intakeSummary.push("✓ [晨间已饮] 车前子壳粉速饮 (高纤基底 350ml+)");
+    
+    let bfDetail = [];
+    if (dayData.breakfast === 'A') bfDetail.push("选项 A: 热 Oat Bran 燕麦麸皮粥 + 白煮蛋/冷藏烤地瓜");
+    else if (dayData.breakfast === 'B') bfDetail.push("选项 B: 白煮蛋 1-2个 + 烤 Sourdough Roll");
+    else if (dayData.breakfast === 'C') bfDetail.push("选项 C: 无糖希腊酸奶 + 柿子/香蕉 + Super Seed Blend");
+    if (dayData.breakfastCustom) bfDetail.push(`实吃补充: ${dayData.breakfastCustom}`);
+    if (chk.m1_breakfast || bfDetail.length > 0) {
+      intakeSummary.push(`✓ [早餐已摄入] ${bfDetail.length > 0 ? bfDetail.join("；") : "标准轻早餐已打卡"}`);
+    }
+
+    if (chk.m1_coffee) intakeSummary.push("✓ [咖啡已饮] 醒后 90-120min 单品手冲黑咖啡 1杯");
+
+    let preDetail = [];
+    if (dayData.preworkoutCustom) preDetail.push(dayData.preworkoutCustom);
+    else preDetail.push("冷藏烤地瓜半个 / 香蕉 1根 + 坚果");
+    if (chk.m2_preworkout || dayData.preworkoutCustom) {
+      intakeSummary.push(`✓ [练前加餐] ${preDetail.join("；")}`);
+    }
+
+    let wTypes = [];
+    const wtMap = { strength: "力量/爆发", flow: "舞蹈/技巧流", mobility: "瑜伽/柔韧修复", cardio: "心肺耐力" };
+    if (dayData.workoutTypes) {
+      Object.keys(dayData.workoutTypes).forEach(k => {
+        if (dayData.workoutTypes[k]) wTypes.push(wtMap[k] || k);
+      });
+    }
+    if (chk.m2_workout_done || dayData.workoutNote || wTypes.length > 0) {
+      let wStr = `✓ [训练执行] ${wTypes.length > 0 ? "维度: " + wTypes.join("、") + "；" : ""}${dayData.workoutNote ? dayData.workoutNote : "课表训练已完成"} (含练后蛋白粉)`;
+      intakeSummary.push(wStr);
+    }
+
+    let lunchDetail = [];
+    if (dayData.lunchCustom) lunchDetail.push(dayData.lunchCustom);
+    if (chk.m2_heavy_supps || dayData.lunchCustom) {
+      intakeSummary.push(`✓ [午餐正餐] ${lunchDetail.length > 0 ? lunchDetail.join("；") : "扎实正餐已摄入 (含主食与肉类油脂)"}`);
+    }
+
+    // 补剂明细打卡
+    let takenSupps = [];
+    if (supps.supp_b_complex) takenSupps.push("Nature Made B族(含高锌)");
+    if (supps.supp_omega3) takenSupps.push("NOW高纯鱼油");
+    if (supps.supp_move_free) takenSupps.push("Move Free氨糖");
+    if (supps.supp_calcium_d3) takenSupps.push("Garden of Life钙镁D3");
+    if (supps.supp_malate_pm) takenSupps.push("苹果酸镁(下午提能)");
+    if (supps.supp_glycinate_bed) takenSupps.push("甘氨酸镁(睡前助眠)");
+    if (takenSupps.length > 0) {
+      intakeSummary.push(`✓ [已服补剂] ${takenSupps.join("、")}`);
+    }
+
+    if (dayData.focusSnackCustom) {
+      intakeSummary.push(`✓ [下午补给] ${dayData.focusSnackCustom}`);
+    }
+
+    if (chk.m4_dinner || dayData.dinnerCustom) {
+      intakeSummary.push(`✓ [晚餐正餐] ${dayData.dinnerCustom ? dayData.dinnerCustom : "高蛋白正餐 + 烤地瓜"}`);
+    }
+
+    if (dayData.lastSnackContent || dayData.lastSnackTime) {
+      intakeSummary.push(`✓ [深夜加餐/最后进食] 时刻: ${dayData.lastSnackTime || "未填"}，内容: ${dayData.lastSnackContent || "未填"}`);
+    }
+
+    const intakeText = intakeSummary.length > 0 ? intakeSummary.join("\n") : "（全天尚未勾选任何饮食打卡框，亦未填写自选食物）";
+
     const userPrompt = `
-- 当前真实物理时间：${curTimeStr}
-- 生理周期阶段：${document.getElementById('cycleNameDisplay').innerText} (${document.getElementById('cycleDayDisplay').innerText})
+【当前物理时间】：${curTimeStr}
+【生理周期与免疫药理】：
+- 生理周期：${document.getElementById('cycleNameDisplay').innerText} (${document.getElementById('cycleDayDisplay').innerText})
 - GLP-1 注射状态：${dayData.glpInjected ? "已注射" : "未注射"} (备注: ${dayData.glpDoseNote || "无"})
 - 免疫脱敏/抗组胺：脱敏针:${dayData.allergy?.shot ? "是" : "否"}, 抗组胺:${dayData.allergy?.anti ? "是" : "否"}, 顺尔宁:${dayData.allergy?.monte ? "是" : "否"} (备注: ${dayData.allergyNote || "无"})
-- 早餐记录：选项 ${dayData.breakfast || "未选"} (自选实吃: ${dayData.breakfastCustom || "无"})
-- 练前加餐：${dayData.preworkoutCustom || "标准方案"}
-- 训练记录：${dayData.workoutNote || "未填写"}
-- 今日午餐实吃：${dayData.lunchCustom || "未填写"}
-- 下午工作补给：${dayData.focusSnackCustom || "未填写"}
-- 晚餐实吃：${dayData.dinnerCustom || "未填写"}
-- 深夜加餐/最后进食：时刻 ${dayData.lastSnackTime || "未记录"}，内容: ${dayData.lastSnackContent || "无"}
-- 红酒/水追踪：红酒 ${dayData.drinks?.wine || 0} 杯，水 ${dayData.drinks?.water || 0} 杯
+- 酒精摄入与水合：标准酒精摄入 ${dayData.drinks?.units || 0} 份/杯，已配水 ${dayData.drinks?.water || 0} 杯 (酒种/配餐: ${dayData.alcoholTypes ? Object.keys(dayData.alcoholTypes).filter(k=>dayData.alcoholTypes[k]).join('、') : '无'})
+
+【今日已完成的真实饮食、补剂与执行记录（请据此准确分析，切勿盲目断定为空腹）】：
+${intakeText}
 `;
 
     const res = await callGeminiAPI(sysPrompt, userPrompt);

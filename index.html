@@ -220,6 +220,21 @@
     color: #4D524F;
     line-height: 1.35;
   }
+  .cycle-symptom-input {
+    border: none;
+    background: #FFF;
+    border-bottom: 1px dotted #B0ABA0;
+    border-radius: 3px;
+    font-size: 11.5px;
+    color: #634730;
+    padding: 3px 6px;
+    outline: none;
+    margin-top: 2px;
+  }
+  .cycle-symptom-input::placeholder {
+    color: #A39B8E;
+    font-style: italic;
+  }
   .cycle-wisdom-box {
     border-top: 1px dashed #DDD8CD;
     margin-top: 3px;
@@ -370,7 +385,7 @@
     transform: scale(0.97);
   }
 
-  /* MODULE 00: MORNING CALIBRATION & SLEEP AUDIT */
+  /* MODULE 00: MORNING CALIBRATION */
   .calibration-card {
     background: var(--card-bg);
     border: 1.2px solid var(--border-color);
@@ -548,7 +563,7 @@
     outline: none;
   }
 
-  /* ALLERGY & IMMUNOLOGY PROTOCOL CARD (NEW) */
+  /* ALLERGY & IMMUNOLOGY PROTOCOL CARD (COLLAPSIBLE BY DEFAULT) */
   .allergy-protocol-card {
     background: #FEFCE8;
     border: 1px solid #FEF08A;
@@ -558,12 +573,20 @@
     font-size: 11.5px;
   }
   .allergy-head {
-    font-weight: 700;
-    color: #854D0E;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 4px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .allergy-body {
+    display: none;
+    margin-top: 6px;
+    padding-top: 5px;
+    border-top: 1px dashed #EAD87A;
+  }
+  .allergy-body.open {
+    display: block;
   }
   .allergy-pills {
     display: flex;
@@ -620,7 +643,7 @@
   }
   .dump-textarea {
     width: 100%;
-    height: 85px;
+    min-height: 85px;
     background-color: #FAF9F6;
     background-image: radial-gradient(#C4BFB2 0.85px, transparent 0.85px);
     background-size: 14px 14px;
@@ -631,8 +654,9 @@
     font-size: 13px;
     color: #1F2220;
     line-height: 1.45;
-    resize: vertical;
+    resize: none;
     outline: none;
+    overflow: hidden;
   }
   .dump-textarea:focus {
     border-color: var(--accent-gold);
@@ -819,43 +843,14 @@
     margin-top: 5px;
     font-size: 12px;
   }
-  .breakfast-radio-row {
-    display: flex;
-    align-items: flex-start;
-    gap: 6px;
-    padding: 3px 0;
-    cursor: pointer;
-  }
-  .breakfast-radio-dot {
-    width: 13px;
-    height: 13px;
-    border: 1.2px solid #8C918E;
-    border-radius: 50%;
-    margin-top: 2px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .breakfast-radio-row.selected .breakfast-radio-dot {
-    border-color: var(--accent-gold);
-  }
-  .breakfast-radio-row.selected .breakfast-radio-dot::after {
-    content: "";
-    width: 6.5px;
-    height: 6.5px;
-    background: var(--accent-gold);
-    border-radius: 50%;
-  }
 
-  /* Custom Extra Meal / Other Food Input */
+  /* Custom Extra Meal / Food Input */
   .custom-food-row {
     display: flex;
     align-items: center;
     gap: 5px;
     margin-top: 5px;
     padding-top: 4px;
-    border-top: 1px dashed #DDD8CD;
   }
   .custom-food-label {
     font-size: 11px;
@@ -865,13 +860,14 @@
   }
   .custom-food-input {
     flex: 1;
+    width: 100%;
     border: none;
     background: transparent;
     border-bottom: 1px dotted #A8A49A;
-    font-size: 12px;
+    font-size: 12.5px;
     color: var(--text-main);
     outline: none;
-    padding: 1px 0;
+    padding: 2px 0;
   }
   .custom-food-input::placeholder {
     color: #9C9F9D;
@@ -896,10 +892,11 @@
     user-select: none;
     transition: all 0.15s ease;
   }
+  /* 强制修复点击白字隐形 Bug */
   .pill-tag.taken {
-    background: #1C2321;
-    color: #FFF;
-    border-color: #1C2321;
+    background: #1C2321 !important;
+    color: #FFFFFF !important;
+    border-color: #1C2321 !important;
     text-decoration: line-through;
   }
 
@@ -945,8 +942,9 @@
     cursor: pointer;
   }
 
-  /* GLP-1 PROTOCOL CARD (NEW) */
+  /* GLP-1 PROTOCOL CARD (DYNAMIC FRIDAY ONLY) */
   .glp-protocol-card {
+    display: none;
     background: #F0FDFA;
     border: 1.2px solid #99F6E4;
     border-radius: 6px;
@@ -1028,7 +1026,7 @@
     margin-bottom: 6px;
   }
 
-  /* AI AUDIT & SYNTHESIS DECKS (GEMINI INTEGRATION) */
+  /* AI AUDIT & SYNTHESIS DECKS */
   .ai-action-bar {
     display: flex;
     align-items: center;
@@ -1061,12 +1059,13 @@
     border: 1px solid var(--border-color);
     border-left: 3px solid #1C2321;
     border-radius: 0 6px 6px 0;
-    padding: 9px 11px;
+    padding: 10px 12px;
     margin-top: 8px;
     font-size: 12.5px;
     color: #2D3732;
-    line-height: 1.5;
-    white-space: pre-line;
+    line-height: 1.55;
+    white-space: pre-wrap;
+    word-break: break-word;
   }
   .ai-result-box.loading {
     display: block;
@@ -1122,18 +1121,23 @@
     gap: 4px;
     margin-bottom: 3px;
   }
-  .highlight-input {
+  .highlight-textarea, .evening-ref-textarea {
     width: 100%;
+    min-height: 65px;
+    background-color: #FAF8F5;
     border: none;
-    background: #FAF8F5;
     border-left: 2.5px solid #D97706;
     border-radius: 0 4px 4px 0;
     padding: 6px 8px;
+    font-family: var(--font-sans);
     font-size: 12.5px;
     color: var(--text-main);
     outline: none;
+    resize: none;
+    overflow: hidden;
+    line-height: 1.45;
   }
-  .highlight-input:focus {
+  .highlight-textarea:focus {
     background: #FFF;
     border-color: #B45309;
   }
@@ -1149,19 +1153,10 @@
     gap: 4px;
     margin-bottom: 3px;
   }
-  .evening-ref-textarea, .dump-textarea {
-    width: 100%;
-    min-height: 75px;
+  .evening-ref-textarea {
     background-color: #FAF9F6;
     border: 1px dashed #CBD5E1;
     border-radius: 5px;
-    padding: 7px 9px;
-    font-family: var(--font-sans);
-    font-size: 12.5px;
-    color: var(--text-main);
-    outline: none;
-    resize: none;
-    overflow: hidden;
   }
 
   /* Bottom Utility Bar */
@@ -1251,7 +1246,7 @@
         </div>
       </div>
 
-      <!-- Auto Cycle Phase Tracking & Wisdom of Words -->
+      <!-- Auto Cycle Phase Tracking & Symptom Note -->
       <div>
         <div class="bio-cell-label">
           <span>当前生理周期 (Cycle Phase)</span>
@@ -1263,8 +1258,10 @@
             <span class="cycle-day-badge" id="cycleDayDisplay">Day 20 / 28</span>
           </div>
           <div class="cycle-hint" id="cycleAdviceDisplay">
-            天然孕酮上升期 · 适合收网沉淀 · 睡前涂抹 Progesterone Lotion
+            天然孕酮上升期 · 适合收网沉淀 · 关注身体边界
           </div>
+          <!-- 生理期症状记录输入框 (NEW) -->
+          <input type="text" id="cycleSymptomNote" class="cycle-symptom-input" placeholder="记录生理期症状（如轻微出血 spotting、酸胀、体感等）..." oninput="autoSave()">
           <div class="cycle-wisdom-box">
             <span>“</span>
             <div class="cycle-wisdom-quote" id="cycleWisdomDisplay">
@@ -1291,7 +1288,7 @@
         <input type="password" id="cfgGeminiKey" class="drawer-input" style="flex:1;" placeholder="AIzaSy..." onchange="saveMasterSettings()">
       </div>
       <div style="font-size:10px; color:var(--text-muted); margin-top:3px;">
-        * 填写 Google AI Studio 免费 API Key 后，即可在 Module 04/05 解锁硬核生理代谢审计与全天闭环简报。
+        * 填写 Google AI Studio 免费 API Key 后即可解锁两处实时 AI 审计。
       </div>
     </div>
 
@@ -1359,18 +1356,23 @@
       </div>
     </div>
 
-    <!-- ALLERGY & IMMUNOLOGY PROTOCOL (NEW) -->
+    <!-- ALLERGY & IMMUNOLOGY PROTOCOL (COLLAPSED BY DEFAULT) -->
     <div class="allergy-protocol-card">
-      <div class="allergy-head">
-        <span>🌿 免疫脱敏与抗组胺追踪 (Allergy &amp; Immunology)</span>
-        <span style="font-size:10px; color:#A16207;">监测中枢嗜睡与免疫炎症</span>
+      <div class="allergy-head" onclick="toggleAllergyCard()">
+        <label style="display:flex; align-items:center; gap:6px; cursor:pointer; font-weight:700; color:#854D0E;">
+          <input type="checkbox" id="allergyMainToggle" onchange="toggleAllergyCard(true)">
+          <span>🌿 今日有免疫脱敏针 / 抗过敏用药</span>
+        </label>
+        <span style="font-size:10.5px; color:#A16207;" id="allergyStatusHint">展开记录 ▾</span>
       </div>
-      <div class="allergy-pills">
-        <span class="allergy-pill" id="pill_allergy_shot" onclick="toggleAllergy('shot')">💉 Allergy Shot (脱敏针)</span>
-        <span class="allergy-pill" id="pill_antihistamine" onclick="toggleAllergy('anti')">💊 Antihistamine (抗组胺)</span>
-        <span class="allergy-pill" id="pill_montelukast" onclick="toggleAllergy('monte')">💊 Montelukast (顺尔宁)</span>
+      <div class="allergy-body" id="allergyBody">
+        <div class="allergy-pills">
+          <span class="allergy-pill" id="pill_allergy_shot" onclick="toggleAllergy('shot')">💉 Allergy Shot (脱敏针)</span>
+          <span class="allergy-pill" id="pill_antihistamine" onclick="toggleAllergy('anti')">💊 Antihistamine (抗组胺)</span>
+          <span class="allergy-pill" id="pill_montelukast" onclick="toggleAllergy('monte')">💊 Montelukast (顺尔宁)</span>
+        </div>
+        <input type="text" id="allergyNote" class="custom-food-input" placeholder="记录注射部位/体感反应/嗜睡感..." oninput="autoSave()">
       </div>
-      <input type="text" id="allergyNote" class="custom-food-input" placeholder="记录注射手臂/反应/嗜睡感..." oninput="autoSave()">
     </div>
 
     <div style="font-size:11px; font-weight:600; color:#5A5248; margin-top:8px;">
@@ -1444,29 +1446,13 @@
       </div>
     </div>
 
+    <!-- 晨间早餐重构：纯自由文本输入框 (NEW) -->
     <div class="flow-row">
       <div class="app-checkbox" data-key="m1_breakfast"></div>
       <div class="task-body">
-        <strong>醒后 1h+ 黄金轻早餐（参考 3 选 1 · 保持清淡，不配刺激性药片）：</strong>
+        <strong>醒后 1h+ 黄金轻早餐（保持清淡，不配刺激性药片）：</strong>
         <div class="sub-panel">
-          <div class="breakfast-radio-row" onclick="setBreakfast('A')">
-            <div class="breakfast-radio-dot" id="bf_A"></div>
-            <div><strong>A 慢碳续航</strong>：热 Oat Bran 麸皮粥 + 白煮蛋切碎 / 配半个冷藏烤地瓜</div>
-          </div>
-          <div class="breakfast-radio-row" onclick="setBreakfast('B')">
-            <div class="breakfast-radio-dot" id="bf_B"></div>
-            <div><strong>B 咸口快手</strong>：冰箱备餐 1–2 个白煮蛋 + 烤 Sourdough Roll 一片</div>
-          </div>
-          <div class="breakfast-radio-row" onclick="setBreakfast('C')">
-            <div class="breakfast-radio-dot" id="bf_C"></div>
-            <div><strong>C 甜口清库</strong>：无糖希腊酸奶 + 熟透柿子/香蕉 + Super Seed Blend</div>
-          </div>
-          
-          <!-- Custom Extra Food -->
-          <div class="custom-food-row">
-            <span class="custom-food-label">🍳 自选/其他实吃：</span>
-            <input type="text" id="breakfastCustom" class="custom-food-input" placeholder="记录实际吃的其他食物或备注..." oninput="autoSave()">
-          </div>
+          <input type="text" id="breakfastCustom" class="custom-food-input" placeholder="输入今日实际吃的早餐（如：Oat Bran 麸皮粥 + 白煮蛋 / 烤面包 / 酸奶等）..." oninput="autoSave()">
         </div>
       </div>
     </div>
@@ -1505,9 +1491,9 @@
       <div class="app-checkbox" data-key="m2_preworkout"></div>
       <div class="task-body">
         <strong>练前 1 小时 (糖原充沛)：</strong> 冷藏烤地瓜半个 / 或香蕉 1 根 + 原味坚果少许
-        <div class="custom-food-row" style="margin-top:3px; border:none; padding:0;">
+        <div class="custom-food-row">
           <span class="custom-food-label" style="font-size:10.5px;">🍌 实际加餐：</span>
-          <input type="text" id="preworkoutCustom" class="custom-food-input" placeholder="如吃其他碳水/坚果量..." oninput="autoSave()">
+          <input type="text" id="preworkoutCustom" class="custom-food-input" placeholder="输入实际摄入的碳水或坚果..." oninput="autoSave()">
         </div>
       </div>
     </div>
@@ -1515,14 +1501,18 @@
     <div class="flow-row">
       <div class="app-checkbox" data-key="m2_workout_done"></div>
       <div class="task-body">
-        <strong>训练执行：</strong>
-        <span class="pill-tag" style="background:#FFF;">CrossFit 爆发</span>
-        <span class="pill-tag" style="background:#FFF;">力量训练</span>
-        <span class="pill-tag" style="background:#FFF;">Iyengar Yoga</span>
-        <input type="text" id="workoutNote" placeholder="今日课表/部位/重量记录..." style="width:100%; border:none; border-bottom:1px dotted #B0ABA0; background:transparent; font-size:12px; margin-top:4px; padding:2px 0; outline:none;">
+        <strong>训练执行（四大功能维度打卡）：</strong>
+        <div class="pill-group" style="margin:4px 0 5px 0;">
+          <span class="pill-tag" data-workout="strength" onclick="toggleWorkoutTag('strength')">🏋️ 力量/爆发 Strength</span>
+          <span class="pill-tag" data-workout="flow" onclick="toggleWorkoutTag('flow')">💃 舞蹈/技巧流动 Dance & Flow</span>
+          <span class="pill-tag" data-workout="mobility" onclick="toggleWorkoutTag('mobility')">🧘 瑜伽/柔韧修复 Mobility</span>
+          <span class="pill-tag" data-workout="cardio" onclick="toggleWorkoutTag('cardio')">🏃 心肺/耐力 Cardio</span>
+        </div>
+        <input type="text" id="workoutNote" placeholder="输入今日具体课表（如：Pole dance 舞蹈流 / CrossFit / 自由力量部位重量等）..." style="width:100%; border:none; border-bottom:1px dotted #B0ABA0; background:transparent; font-size:12.5px; margin-top:2px; padding:2px 0; outline:none;">
       </div>
     </div>
 
+    <!-- 正餐重炮补剂：文案全面精简 (NEW) -->
     <div class="flow-row">
       <div class="app-checkbox" data-key="m2_heavy_supps"></div>
       <div class="task-body">
@@ -1531,13 +1521,12 @@
           <span class="badge-rule">铁律</span> <strong>面前必须有扎实肉类油脂与主食，彻底脱敏硫酸锌！</strong>
         </div>
         <div class="pill-group">
-          <span class="pill-tag" data-supp="supp_b_complex">Nature Made B族 1粒 (含23.9mg锌)</span>
-          <span class="pill-tag" data-supp="supp_omega3">NOW 高纯鱼油 2粒</span>
-          <span class="pill-tag" data-supp="supp_move_free">Move Free 氨糖软骨素 1–2粒</span>
-          <span class="pill-tag" data-supp="supp_calcium_d3">Garden of Life 钙镁 1–2粒</span>
+          <span class="pill-tag" data-supp="supp_b_complex">Nature Made B族</span>
+          <span class="pill-tag" data-supp="supp_omega3">NOW 鱼油</span>
+          <span class="pill-tag" data-supp="supp_move_free">Move Free</span>
+          <span class="pill-tag" data-supp="supp_calcium_d3">钙镁 D3</span>
         </div>
         
-        <!-- Custom Lunch Meal -->
         <div class="custom-food-row" style="margin-top:6px;">
           <span class="custom-food-label">🥩 今日午餐实吃：</span>
           <input type="text" id="lunchCustom" class="custom-food-input" placeholder="记录今天中午吃了什么大餐/主食/肉类..." oninput="autoSave()">
@@ -1565,7 +1554,7 @@
         <strong style="color:var(--accent-focus);">⚡ 状态 A：高能产出 / 认知游荡期 (代码 · 策略 · 深度构建)</strong>
         <div class="sub-panel" style="background:#F4F8F5; border-color:#C1D9CA; margin-top:4px;">
           <div>▸ <strong>GoStak 舱装填参考</strong>：[无盐坚果] ⏐ [Chomps 肉干] ⏐ [冻干草莓/85%+黑巧]</div>
-          <div class="custom-food-row" style="margin-top:3px; border:none; padding:0;">
+          <div class="custom-food-row">
             <span class="custom-food-label" style="font-size:10.5px; color:#23593D;">🥜 下午实际补给：</span>
             <input type="text" id="focusSnackCustom" class="custom-food-input" placeholder="吃了什么坚果/零食/水果..." oninput="autoSave()">
           </div>
@@ -1585,16 +1574,17 @@
       </div>
     </div>
 
+    <!-- 修复苹果酸镁点击消失 Bug：移除行内 style="background:#FFF"，确保 .taken 样式稳固生效 (NEW) -->
     <div class="flow-row" style="margin-top:8px;">
       <div class="app-checkbox" data-key="m3_malate_pump"></div>
       <div class="task-body">
         <strong style="color:#1C4E72;">⚡ 下午疲劳期线粒体能量泵 (醒后 6~7h 左右 · 两镁分立之“提能镁”)：</strong>
         <div class="sub-panel" style="background:#F2F7FA; border-color:#BAD4E4; margin-top:4px;">
           <div style="display:flex; align-items:center; justify-content:space-between;">
-            <span class="pill-tag" data-supp="supp_malate_pm" style="background:#FFF;">Source Naturals 苹果酸镁 2粒 (约140mg镁)</span>
+            <span class="pill-tag" data-supp="supp_malate_pm">Source Naturals 苹果酸镁</span>
           </div>
           <div style="font-size:11px; color:#3C5970; margin-top:3px;">
-            • 苹果酸直接供能三羧酸循环，提神抗疲劳，完美平替第二杯咖啡！避开午餐高钙，吸收通道完全通畅。
+            • 苹果酸直接供能三羧酸循环，提神抗疲劳，平替咖啡；避开午餐高钙，吸收通道顺畅。
           </div>
         </div>
       </div>
@@ -1626,10 +1616,10 @@
       </div>
     </div>
 
-    <!-- GLP-1 PROTOCOL CARD (NEW) -->
+    <!-- GLP-1 PROTOCOL CARD (ONLY SHOWN ON FRIDAY OR WHEN INJECTED) (NEW) -->
     <div class="glp-protocol-card" id="glpCard">
       <div class="glp-head">
-        <span>💉 GLP-1 注射协议 (Weekly Anchor)</span>
+        <span>💉 GLP-1 注射协议 (周五常规注射)</span>
         <button type="button" class="glp-toggle-btn" id="glpToggleBtn" onclick="toggleGLP()">
           打卡注射
         </button>
@@ -1637,9 +1627,6 @@
       <div style="display:flex; align-items:center; gap:6px; margin-top:4px;">
         <span style="font-size:11px; color:#0F766E;">剂量/备注：</span>
         <input type="text" id="glpDoseNote" class="custom-food-input" placeholder="如 Semaglutide 0.25mg / Tirzepatide..." oninput="autoSave()">
-      </div>
-      <div style="font-size:10px; color:#115E59; margin-top:3px;" id="glpFridayHint">
-        * 每周五晚常规注射。注射后胃排空减缓，全天饮食审计将自动纳入 GLP-1 药理考量。
       </div>
     </div>
 
@@ -1681,17 +1668,16 @@
       </div>
     </div>
 
+    <!-- 睡前神经降落精简：去掉死板固定用药，改为按需自由备注 (NEW) -->
     <div class="flow-row">
       <div class="app-checkbox" data-key="m4_glycinate_brake"></div>
       <div class="task-body">
-        <strong>睡前 30–60 min 神经制动阀与激素调谐（两镁分立之“助眠镁”）：</strong>
+        <strong>睡前 30–60 min 神经制动阀与深度降落：</strong>
         <div class="sub-panel" style="background:#FAF4F0; border-color:#E8C6B2; margin-top:3px;">
-          <div>
-            ▸ <span class="pill-tag" data-supp="supp_glycinate_bed" style="background:#FFF;">分装盒甘氨酸镁 200mg</span>
-            <span style="font-size:11px; color:#684D3B;">跨血脑屏障补充 GABA，阻断兴奋受体，纯放松深睡。</span>
-          </div>
-          <div id="progesteroneWarning" style="margin-top:4px;">
-            <span class="badge-rule">黄体期专属</span> <strong>Day 15–28 睡前涂抹 Progesterone Lotion</strong>
+          <div>▸ 切换暖光 (&lt;2700K)，进入非审判安全区（甘氨酸镁 / 黄体酮按需补充）</div>
+          <div class="custom-food-row" style="margin-top:3px;">
+            <span class="custom-food-label" style="font-size:10.5px; color:#684D3B;">🌙 实际睡前用药/涂抹：</span>
+            <input type="text" id="winddownNote" class="custom-food-input" placeholder="按需甘氨酸镁 / Progesterone 等（不固定用可留空）..." oninput="autoSave()">
           </div>
         </div>
       </div>
@@ -1715,7 +1701,7 @@
       </div>
     </div>
 
-    <!-- AI DIET & METABOLIC AUDIT TRIGGER (NODE 1) -->
+    <!-- AI DIET & METABOLIC AUDIT TRIGGER -->
     <div class="ai-action-bar">
       <span style="font-size:11.5px; font-weight:700; color:#1C2321;">⚡ 代谢与饮食生理审计 (Metabolic Audit)</span>
       <button type="button" class="ai-trigger-btn" onclick="auditNutritionAI()">
@@ -1725,7 +1711,7 @@
     <div class="ai-result-box" id="dietAuditResult"></div>
   </div>
 
-  <!-- MODULE 05: DAILY REFLECTION, HIGHLIGHT & SYNTHESIS (NODE 2) -->
+  <!-- MODULE 05: DAILY REFLECTION, HIGHLIGHT & SYNTHESIS -->
   <div class="reflection-card">
     <div class="reflect-head">
       <div class="reflect-title-group">
@@ -1735,15 +1721,15 @@
       <span class="reflect-badge">DAY'S END</span>
     </div>
 
-    <!-- Highlight -->
+    <!-- Highlight: 改为自适应高度的 Textarea (NEW) -->
     <div class="highlight-wrap">
       <div class="highlight-label">
         <span>✨</span> <strong>今日高光 (Today's Highlight · 不可替代之刻)：</strong>
       </div>
-      <input type="text" id="dailyHighlight" class="highlight-input" placeholder="今天最值得铭记的产出、体悟或松弛时刻..." oninput="autoSave()">
+      <textarea id="dailyHighlight" class="highlight-textarea" placeholder="今天最值得铭记的产出、体悟或松弛时刻..." oninput="autoSave()"></textarea>
     </div>
 
-    <!-- Reflection -->
+    <!-- Reflection: 自适应高度 Textarea -->
     <div class="evening-ref-wrap">
       <div class="evening-ref-label">
         <span>🌙</span> <strong>夜间反思与闭环沉淀 (Closing Synthesis)：</strong>
@@ -1751,7 +1737,7 @@
       <textarea id="dailyReflection" class="evening-ref-textarea" placeholder="卸载今日残余思绪，确认认知闭环，允许今天到此为止..." oninput="autoSave()"></textarea>
     </div>
 
-    <!-- AI DAILY SYNTHESIS & INSPIRATION (NODE 2) -->
+    <!-- AI DAILY SYNTHESIS & INSPIRATION -->
     <div class="ai-action-bar" style="margin-top:12px;">
       <span style="font-size:11.5px; font-weight:700; color:var(--accent-reflect);">✦ 认知共鸣与闭环简报 (Daily Synthesis)</span>
       <button type="button" class="ai-trigger-btn" style="background:#2B3E50; border-color:#486581;" onclick="synthesizeDailyAI()">
@@ -1930,6 +1916,23 @@
     document.getElementById('cycleDrawer').classList.toggle('open');
   }
 
+  function toggleAllergyCard(forceOpen = false) {
+    const chk = document.getElementById('allergyMainToggle');
+    if (!forceOpen) {
+      chk.checked = !chk.checked;
+    }
+    const body = document.getElementById('allergyBody');
+    const hint = document.getElementById('allergyStatusHint');
+    if (chk.checked) {
+      body.classList.add('open');
+      hint.innerText = '收起 ▴';
+    } else {
+      body.classList.remove('open');
+      hint.innerText = '展开记录 ▾';
+    }
+    autoSave();
+  }
+
   function loadMasterSettings() {
     const saved = localStorage.getItem('entp_flow_master_config');
     if (saved) {
@@ -2055,28 +2058,23 @@
     let phaseKey = "";
     let phaseName = "";
     let phaseAdvice = "";
-    let isLuteal = false;
 
     if (dayInCycle <= 5) {
       phaseKey = "menstrual";
       phaseName = "月经期 (Menstrual)";
-      phaseAdvice = "深度休整 · 补充优质电解质与慢碳 · 严禁使用黄体酮！";
-      isLuteal = false;
+      phaseAdvice = "深度休整 · 补充优质电解质与慢碳 · 关注能量出清";
     } else if (dayInCycle <= 13) {
       phaseKey = "follicular";
       phaseName = "卵泡期 (Follicular)";
-      phaseAdvice = "多巴胺高敏感 · 学习与策略巅峰 · 严格停用黄体酮！";
-      isLuteal = false;
+      phaseAdvice = "多巴胺高敏感 · 学习与策略巅峰 · 稳步推进建构";
     } else if (dayInCycle === 14) {
       phaseKey = "ovulatory";
       phaseName = "排卵期 (Ovulatory)";
-      phaseAdvice = "雌激素峰值 · 力量与社交能量巅峰 · 准备切换至黄体期";
-      isLuteal = false;
+      phaseAdvice = "雌激素峰值 · 力量与社交能量巅峰 · 决断核心议题";
     } else {
       phaseKey = "luteal";
       phaseName = "黄体期 (Luteal)";
-      phaseAdvice = "天然孕酮主导 · 适合收敛沉淀 · 睡前涂抹 Progesterone Lotion";
-      isLuteal = true;
+      phaseAdvice = "天然孕酮上升期 · 适合收网沉淀 · 建立安全边界";
     }
 
     document.getElementById('cycleNameDisplay').innerText = phaseName;
@@ -2085,13 +2083,6 @@
     const quotes = CYCLE_WISDOM[phaseKey];
     const qIndex = (Math.abs(diffDays) + dayInCycle) % quotes.length;
     document.getElementById('cycleWisdomDisplay').innerText = quotes[qIndex];
-
-    const warnBox = document.getElementById('progesteroneWarning');
-    if (!isLuteal) {
-      warnBox.innerHTML = `<span class="badge-warn">非黄体期警戒</span> <strong style="color:#9C1F1F;">当前阶段严格停用 Progesterone Lotion！</strong>`;
-    } else {
-      warnBox.innerHTML = `<span class="badge-rule">黄体期专属</span> <strong>Day 15–28 睡前涂抹 Progesterone Lotion</strong>`;
-    }
   }
 
   function parseTime(timeStr) {
@@ -2212,15 +2203,17 @@
       bgm: "",
       napStart: "",
       napEnd: "",
+      cycleSymptomNote: "",
+      allergyEnabled: false,
       allergy: { shot: false, anti: false, monte: false },
       allergyNote: "",
-      breakfast: null,
       breakfastCustom: "",
       preworkoutCustom: "",
       workoutNote: "",
       lunchCustom: "",
       focusSnackCustom: "",
       dinnerCustom: "",
+      winddownNote: "",
       glpInjected: false,
       glpDoseNote: "",
       lastSnackTime: "",
@@ -2251,7 +2244,7 @@
       document.getElementById('napDrawer').classList.remove('open');
     }
 
-    // 训练四大维度状态恢复
+    // 训练四大功能维度状态恢复
     const wt = dayData.workoutTypes || {};
     ['strength', 'flow', 'mobility', 'cardio'].forEach(type => {
       const el = document.querySelector(`.pill-tag[data-workout="${type}"]`);
@@ -2265,7 +2258,22 @@
       if (el) el.classList.toggle('taken', !!at[type]);
     });
 
-    // Allergy
+    // 生理期症状输入
+    document.getElementById('cycleSymptomNote').value = dayData.cycleSymptomNote || "";
+
+    // Allergy 展开状态与勾选
+    const alToggle = document.getElementById('allergyMainToggle');
+    alToggle.checked = !!dayData.allergyEnabled;
+    const alBody = document.getElementById('allergyBody');
+    const alHint = document.getElementById('allergyStatusHint');
+    if (alToggle.checked) {
+      alBody.classList.add('open');
+      alHint.innerText = '收起 ▴';
+    } else {
+      alBody.classList.remove('open');
+      alHint.innerText = '展开记录 ▾';
+    }
+
     const al = dayData.allergy || {};
     document.getElementById('pill_allergy_shot').classList.toggle('active', !!al.shot);
     document.getElementById('pill_antihistamine').classList.toggle('active', !!al.anti);
@@ -2276,20 +2284,20 @@
     document.getElementById('glpToggleBtn').classList.toggle('active', !!dayData.glpInjected);
     document.getElementById('glpDoseNote').value = dayData.glpDoseNote || "";
 
-    // Meals
-    setBreakfast(dayData.breakfast, false);
+    // 自由文本饮食与睡前记录
     document.getElementById('breakfastCustom').value = dayData.breakfastCustom || "";
     document.getElementById('preworkoutCustom').value = dayData.preworkoutCustom || "";
     document.getElementById('workoutNote').value = dayData.workoutNote || "";
     document.getElementById('lunchCustom').value = dayData.lunchCustom || "";
     document.getElementById('focusSnackCustom').value = dayData.focusSnackCustom || "";
     document.getElementById('dinnerCustom').value = dayData.dinnerCustom || "";
+    document.getElementById('winddownNote').value = dayData.winddownNote || "";
     document.getElementById('lastSnackTime').value = dayData.lastSnackTime || "";
     document.getElementById('lastSnackContent').value = dayData.lastSnackContent || "";
     document.getElementById('bedTime').value = dayData.bedTime || "";
     document.getElementById('sleepTime').value = dayData.sleepTime || "";
 
-    // AI Results Cache
+    // AI 缓存
     const dBox = document.getElementById('dietAuditResult');
     if (dayData.dietAuditCache) {
       dBox.innerHTML = dayData.dietAuditCache;
@@ -2344,6 +2352,11 @@
 
     calcCyclePhase();
     updateSchedule();
+
+    // 重新自适应所有文本框
+    setTimeout(() => {
+      document.querySelectorAll('textarea').forEach(el => autoResizeTextarea(el));
+    }, 10);
   }
 
   function autoSave() {
@@ -2352,6 +2365,8 @@
     dayData.bgm = document.getElementById('dailyBgmInput').value;
     // naps 实时由 updateNapSegment / addNapSegment 存储
 
+    dayData.cycleSymptomNote = document.getElementById('cycleSymptomNote').value;
+    dayData.allergyEnabled = document.getElementById('allergyMainToggle').checked;
     dayData.allergyNote = document.getElementById('allergyNote').value;
     dayData.glpDoseNote = document.getElementById('glpDoseNote').value;
 
@@ -2361,6 +2376,7 @@
     dayData.lunchCustom = document.getElementById('lunchCustom').value;
     dayData.focusSnackCustom = document.getElementById('focusSnackCustom').value;
     dayData.dinnerCustom = document.getElementById('dinnerCustom').value;
+    dayData.winddownNote = document.getElementById('winddownNote').value;
     dayData.lastSnackTime = document.getElementById('lastSnackTime').value;
     dayData.lastSnackContent = document.getElementById('lastSnackContent').value;
     dayData.bedTime = document.getElementById('bedTime').value;
@@ -2416,15 +2432,6 @@
     if (save) autoSave();
   }
 
-  function setBreakfast(opt, save = true) {
-    dayData.breakfast = opt;
-    ['A', 'B', 'C'].forEach(k => {
-      const row = document.getElementById(`bf_${k}`).closest('.breakfast-radio-row');
-      row.classList.toggle('selected', k === opt);
-    });
-    if (save) autoSave();
-  }
-
   function addWine(n) {
     if (!dayData.drinks) dayData.drinks = { wine: 0, water: 0 };
     dayData.drinks.wine = Math.max(0, (dayData.drinks.wine || 0) + n);
@@ -2471,7 +2478,7 @@
       ],
       generationConfig: {
         temperature: 0.7,
-        maxOutputTokens: 1500
+        maxOutputTokens: 2000
       }
     };
 
@@ -2486,8 +2493,11 @@
         throw new Error(errData.error?.message || "API 调用失败");
       }
       const data = await resp.json();
-      const outputText = data.candidates?.[0]?.content?.parts?.[0]?.text;
-      return outputText || "未获取到分析结果。";
+      
+      // 彻底修复截断：安全拼接所有候选部件
+      const parts = data.candidates?.[0]?.content?.parts || [];
+      const outputText = parts.map(p => p.text || '').join('').trim();
+      return outputText || "未获取到完整分析结果。";
     } catch(err) {
       alert(`Gemini 调用失败: ${err.message}`);
       return null;
@@ -2499,50 +2509,25 @@
     const resultBox = document.getElementById('dietAuditResult');
     resultBox.classList.add('loading');
     resultBox.style.display = "block";
-    resultBox.innerText = "⚡ 正在结合当前时钟解构宏量营养素、胰岛素与代谢节律...";
+    resultBox.innerText = "⚡ 正在结合当前时钟与全量摄入事实进行代谢审计...";
 
     const now = new Date();
     const curTimeStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
 
-    const sysPrompt = `你是一位客观、平视、敏锐的代谢生理学与精准营养顾问。
-【严格风格准则】：
-- 严禁任何矫情、过分亲昵的称谓与语气（绝对禁止使用“亲爱的”、“棒极了”、“加油！”、“滋养心灵”等情绪化词汇）。
-- 严禁废话问候（不要说“晚上好”、“你好”），开门见山，直切本质。
-- 严禁显而易见的常识废话（如“早起喝一杯水”、“按时吃饭”）。
-- 保持成年人之间理智、专业且有支持感的平视对话，用清晰机理和高度可落地的具体微调建议说话。
-- 务必参考【当前真实物理时间】：结合用户当前所处的具体时间点给出实时建议，不要凭空预设已经是深夜或一天结束。
-
-请按以下结构简洁输出（300字以内）：
-1.【代谢与供能节律评估】：客观分析已摄入碳水、蛋白质或加餐对当前血糖曲线与脑力的支撑度；结合当前生理周期与 GLP-1/抗敏药状态做精准归因。
-2.【吸收与时序优化】：指出补剂服用环境或时序上的关键注意点（如油脂包裹、矿物质吸收）。
-3.【即时/后续执行锚点】：基于当前时间点，给出 1-2 条接下来最立竿见影、好操作的饮食或能量微调方案。`;
-
-
-    // 动态提取并解析所有复选框与摄入事实
     const chk = dayData.checkboxes || {};
     const supps = dayData.supplements || {};
 
     let intakeSummary = [];
     if (chk.m1_light_psyllium) intakeSummary.push("✓ [晨间已饮] 车前子壳粉速饮 (高纤基底 350ml+)");
-    
-    let bfDetail = [];
-    if (dayData.breakfast === 'A') bfDetail.push("选项 A: 热 Oat Bran 燕麦麸皮粥 + 白煮蛋/冷藏烤地瓜");
-    else if (dayData.breakfast === 'B') bfDetail.push("选项 B: 白煮蛋 1-2个 + 烤 Sourdough Roll");
-    else if (dayData.breakfast === 'C') bfDetail.push("选项 C: 无糖希腊酸奶 + 柿子/香蕉 + Super Seed Blend");
-    if (dayData.breakfastCustom) bfDetail.push(`实吃补充: ${dayData.breakfastCustom}`);
-    if (chk.m1_breakfast || bfDetail.length > 0) {
-      intakeSummary.push(`✓ [早餐已摄入] ${bfDetail.length > 0 ? bfDetail.join("；") : "标准轻早餐已打卡"}`);
+    if (chk.m1_breakfast || dayData.breakfastCustom) {
+      intakeSummary.push(`✓ [早餐已摄入] ${dayData.breakfastCustom ? dayData.breakfastCustom : "轻早餐已打卡"}`);
     }
-
     if (chk.m1_coffee) intakeSummary.push("✓ [咖啡已饮] 醒后 90-120min 单品手冲黑咖啡 1杯");
 
-    let preDetail = [];
-    if (dayData.preworkoutCustom) preDetail.push(dayData.preworkoutCustom);
-    else preDetail.push("冷藏烤地瓜半个 / 香蕉 1根 + 坚果");
+    let preDetail = dayData.preworkoutCustom || "冷藏地瓜/香蕉+坚果";
     if (chk.m2_preworkout || dayData.preworkoutCustom) {
-      intakeSummary.push(`✓ [练前加餐] ${preDetail.join("；")}`);
+      intakeSummary.push(`✓ [练前加餐] ${preDetail}`);
     }
-
     let wTypes = [];
     const wtMap = { strength: "力量/爆发", flow: "舞蹈/技巧流", mobility: "瑜伽/柔韧修复", cardio: "心肺耐力" };
     if (dayData.workoutTypes) {
@@ -2555,20 +2540,16 @@
       intakeSummary.push(wStr);
     }
 
-    let lunchDetail = [];
-    if (dayData.lunchCustom) lunchDetail.push(dayData.lunchCustom);
     if (chk.m2_heavy_supps || dayData.lunchCustom) {
-      intakeSummary.push(`✓ [午餐正餐] ${lunchDetail.length > 0 ? lunchDetail.join("；") : "扎实正餐已摄入 (含主食与肉类油脂)"}`);
+      intakeSummary.push(`✓ [午餐正餐] ${dayData.lunchCustom ? dayData.lunchCustom : "扎实正餐已摄入 (含肉类油脂主食)"}`);
     }
 
-    // 补剂明细打卡
     let takenSupps = [];
-    if (supps.supp_b_complex) takenSupps.push("Nature Made B族(含高锌)");
-    if (supps.supp_omega3) takenSupps.push("NOW高纯鱼油");
+    if (supps.supp_b_complex) takenSupps.push("B族(高锌)");
+    if (supps.supp_omega3) takenSupps.push("高纯鱼油");
     if (supps.supp_move_free) takenSupps.push("Move Free氨糖");
-    if (supps.supp_calcium_d3) takenSupps.push("Garden of Life钙镁D3");
-    if (supps.supp_malate_pm) takenSupps.push("苹果酸镁(下午提能)");
-    if (supps.supp_glycinate_bed) takenSupps.push("甘氨酸镁(睡前助眠)");
+    if (supps.supp_calcium_d3) takenSupps.push("钙镁D3");
+    if (supps.supp_malate_pm) takenSupps.push("苹果酸镁");
     if (takenSupps.length > 0) {
       intakeSummary.push(`✓ [已服补剂] ${takenSupps.join("、")}`);
     }
@@ -2576,26 +2557,42 @@
     if (dayData.focusSnackCustom) {
       intakeSummary.push(`✓ [下午补给] ${dayData.focusSnackCustom}`);
     }
-
     if (chk.m4_dinner || dayData.dinnerCustom) {
       intakeSummary.push(`✓ [晚餐正餐] ${dayData.dinnerCustom ? dayData.dinnerCustom : "高蛋白正餐 + 烤地瓜"}`);
     }
-
     if (dayData.lastSnackContent || dayData.lastSnackTime) {
       intakeSummary.push(`✓ [深夜加餐/最后进食] 时刻: ${dayData.lastSnackTime || "未填"}，内容: ${dayData.lastSnackContent || "未填"}`);
+    }
+    if (dayData.winddownNote) {
+      intakeSummary.push(`✓ [睡前用药/涂抹] ${dayData.winddownNote}`);
     }
 
     const intakeText = intakeSummary.length > 0 ? intakeSummary.join("\n") : "（全天尚未勾选任何饮食打卡框，亦未填写自选食物）";
 
+    const sysPrompt = `你是一位客观、平视、敏锐的代谢生理学与精准营养顾问。
+【严格风格准则】：
+- 严禁任何矫情、过分亲昵的称谓（绝对禁止“亲爱的”、“棒极了”、“加油！”、“滋养心灵”等虚浮用词）。
+- 严禁废话问候，直接切入本质。
+- 严禁平庸常识（如“早起喝水”、“按时吃饭”）。
+- 保持成年人之间理智平视、有理有据的专业支持，用清晰机理和高度落地的建议说话。
+- 务必参考【当前真实物理时间】与【已完成的真实饮食记录】：若已有进食打卡，切勿误判为空腹；根据当前时段给出针对性指导。
+- 务必保证回复结构完整收敛，不要在中途突然截断。
+
+请分三段简明输出（250-320字）：
+1.【代谢与供能节律评估】：客观分析已吃食物对血糖平稳与脑力/体能的支撑；结合生理周期症状与 GLP-1/抗敏药做精准归因。
+2.【吸收与时序优化】：评估补剂服用环境或时序协同。
+3.【即时执行方案】：基于当前物理时刻，给出 1-2 条接下来最好操作的饮食或能量微调方案。`;
+
     const userPrompt = `
 【当前物理时间】：${curTimeStr}
-【生理周期与免疫药理】：
-- 生理周期：${document.getElementById('cycleNameDisplay').innerText} (${document.getElementById('cycleDayDisplay').innerText})
+【生理周期与药理】：
+- 生理阶段：${document.getElementById('cycleNameDisplay').innerText} (${document.getElementById('cycleDayDisplay').innerText})
+- 生理期伴随症状：${dayData.cycleSymptomNote || "无特殊记录"}
 - GLP-1 注射状态：${dayData.glpInjected ? "已注射" : "未注射"} (备注: ${dayData.glpDoseNote || "无"})
-- 免疫脱敏/抗组胺：脱敏针:${dayData.allergy?.shot ? "是" : "否"}, 抗组胺:${dayData.allergy?.anti ? "是" : "否"}, 顺尔宁:${dayData.allergy?.monte ? "是" : "否"} (备注: ${dayData.allergyNote || "无"})
+- 免疫脱敏/抗敏药：${dayData.allergyEnabled ? "今日已启用" : "未启用"} (脱敏针:${dayData.allergy?.shot ? "是" : "否"}, 抗组胺:${dayData.allergy?.anti ? "是" : "否"}, 顺尔宁:${dayData.allergy?.monte ? "是" : "否"}, 备注: ${dayData.allergyNote || "无"})
 - 酒精摄入与水合：标准酒精摄入 ${dayData.drinks?.units || 0} 份/杯，已配水 ${dayData.drinks?.water || 0} 杯 (酒种/配餐: ${dayData.alcoholTypes ? Object.keys(dayData.alcoholTypes).filter(k=>dayData.alcoholTypes[k]).join('、') : '无'})
 
-【今日已完成的真实饮食、补剂与执行记录（请据此准确分析，切勿盲目断定为空腹）】：
+【今日真实饮食与补剂摄入（请仔细核对，切勿推断为空腹）】：
 ${intakeText}
 `;
 
@@ -2622,23 +2619,25 @@ ${intakeText}
 
     const sysPrompt = `你是一位深邃、敏锐、务实的智识协作者（Thought Partner）。
 【严格风格准则】：
-- 严禁任何套话公关辞令、矫情抒情或廉价打气（绝对禁止“亲爱的”、“棒棒的”、“明天继续优雅前行”等虚浮词汇）。
+- 严禁任何套话公关辞令、矫情抒情或廉价打气（绝对禁止“亲爱的”、“棒棒的”、“继续优雅前行”等虚浮词汇）。
 - 绝不啰嗦寒暄，直接呈现洞察。
-- 拒绝平庸常识，针对用户的实际反思与思维动态，进行有深度、有逻辑美感的提炼。
+- 拒绝平庸鸡汤，针对用户的实际反思与思维动态，进行有深度、有逻辑美感的提炼。
 - 结合【当前真实物理时间】：若当前并非深夜，聚焦于梳理目前为止的思维推进；若已入夜，提供清晰的认知卸载模型。
+- 务必保证回复结构完整收尾，绝对不要半句截断。
 
 请按以下结构输出（250-320字）：
-1.【认知流动与系统观察】：提炼用户在方案构思、多任务运转或专注流中的关键张力与秩序，客观肯定其在真实问题上的智识产出。
+1.【认知流动与系统观察】：提炼用户在方案构思、多任务推进或专注流中的关键张力与秩序，客观肯定其在真实问题上的智识产出。
 2.【心流落点与思维锚定】：帮用户厘清当前思维负荷的边界，提供一句简短而具穿透力、不落俗套的观察或思维箴言（Quote），助其完成逻辑闭环。`;
 
     const userPrompt = `
 - 当前真实物理时间：${curTimeStr}
-- 生理周期阶段：${document.getElementById('cycleNameDisplay').innerText} (${document.getElementById('cycleDayDisplay').innerText})
+- 生理阶段：${document.getElementById('cycleNameDisplay').innerText} (${document.getElementById('cycleDayDisplay').innerText})
+- 生理期症状：${dayData.cycleSymptomNote || "无"}
 - 晨间主观精力：${dayData.readiness || "balanced"}，多巴胺电量：${dayData.battery || 3}/5
 - 晨间身体训练意图：${dayData.physicalIntent || "未设定"}
 - 今日心流 BGM：${dayData.bgm || "未填"}
 - 灵感与杂念倾泻区 (Brain Dump)：${dayData.brainDump || "无"}
-- 今日核心单核防丢锚：
+- 今日单核防丢锚完成情况：
   1. [${dayData.checkboxes?.tether_chk_1 ? "已完成" : "未完成"}] ${dayData.tether?.[0] || ""}
   2. [${dayData.checkboxes?.tether_chk_2 ? "已完成" : "未完成"}] ${dayData.tether?.[1] || ""}
   3. [${dayData.checkboxes?.tether_chk_3 ? "已完成" : "未完成"}] ${dayData.tether?.[2] || ""}
@@ -2658,11 +2657,20 @@ ${intakeText}
     }
   }
 
+  // 自动自适应调整文本框高度
+  function autoResizeTextarea(el) {
+    if (!el) return;
+    el.style.height = 'auto';
+    el.style.height = (el.scrollHeight + 2) + 'px';
+  }
+
+  document.addEventListener('input', (e) => {
+    if (e.target.tagName && e.target.tagName.toLowerCase() === 'textarea') {
+      autoResizeTextarea(e.target);
+    }
+  });
+
   document.addEventListener('DOMContentLoaded', () => {
-
-    // 初始化自适应文本框高度
-    document.querySelectorAll('textarea').forEach(el => autoResizeTextarea(el));
-
     loadMasterSettings();
     loadDay(getTodayStr());
 
@@ -2727,9 +2735,9 @@ ${intakeText}
 
     // Auto-save input listeners
     [
-      'physicalIntent', 'dailyBgmInput', 'breakfastCustom', 'preworkoutCustom', 
-      'workoutNote', 'lunchCustom', 'focusSnackCustom', 'dinnerCustom', 
-      'lastSnackContent', 'allergyNote', 'glpDoseNote',
+      'physicalIntent', 'dailyBgmInput', 'cycleSymptomNote', 'breakfastCustom', 
+      'preworkoutCustom', 'workoutNote', 'lunchCustom', 'focusSnackCustom', 
+      'dinnerCustom', 'winddownNote', 'lastSnackContent', 'allergyNote', 'glpDoseNote',
       'dailyHighlight', 'dailyReflection', 'brainDump', 
       'tether_text_1', 'tether_text_2', 'tether_text_3'
     ].forEach(id => {
@@ -2780,19 +2788,6 @@ ${intakeText}
       showToast("今日数据已重置");
     }
   }
-
-    // 自动自适应调整文本框高度
-    function autoResizeTextarea(el) {
-      el.style.height = 'auto';
-      el.style.height = (el.scrollHeight + 2) + 'px';
-    }
-
-    document.addEventListener('input', (e) => {
-      if (e.target.tagName.toLowerCase() === 'textarea') {
-        autoResizeTextarea(e.target);
-      }
-    });
-
 </script>
 
 </body>

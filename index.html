@@ -1403,6 +1403,15 @@
       <span class="canvas-subtitle-quote">Offload working memory first — 一大早将杂念与狂想彻底倾倒</span>
     </div>
     <textarea id="brainDump" class="dump-textarea" placeholder="早上醒来第一件事：在这里彻底倒空脑海里的闪念、未完成构想或混沌狂想..."></textarea>
+    
+    <!-- AI BRAIN DUMP STRUCTURING TRIGGER (NODE 0) -->
+    <div class="ai-action-bar" style="margin-top:6px; padding-top:6px;">
+      <span style="font-size:11px; font-weight:700; color:#783F15;">💡 晨间认知解构与框架厘清</span>
+      <button type="button" class="ai-trigger-btn" style="background:#4A3828; border-color:#785B40; padding:4px 8px; font-size:11px;" onclick="clarifyBrainDumpAI()">
+        ✦ 结构化梳理今日优先级
+      </button>
+    </div>
+    <div class="ai-result-box" id="brainDumpResult" style="border-left-color:#8C532B;"></div>
 
     <!-- Daily Tether -->
     <div class="tether-container">
@@ -2306,6 +2315,14 @@
       dBox.style.display = "none";
     }
 
+    const bdBox = document.getElementById('brainDumpResult');
+    if (dayData.brainDumpAICache) {
+      bdBox.innerHTML = dayData.brainDumpAICache;
+      bdBox.style.display = "block";
+    } else {
+      bdBox.style.display = "none";
+    }
+
     const sBox = document.getElementById('dailySynthesisResult');
     if (dayData.dailySynthesisCache) {
       sBox.innerHTML = dayData.dailySynthesisCache;
@@ -2501,6 +2518,62 @@
     } catch(err) {
       alert(`Gemini 调用失败: ${err.message}`);
       return null;
+    }
+  }
+
+
+  // NODE 0: 晨间 Brain Dump 结构化梳理与优先级提炼
+  async function clarifyBrainDumpAI() {
+    const dumpText = (document.getElementById('brainDump').value || '').trim();
+    if (!dumpText) {
+      alert("请先在上方输入脑海中的闪念、杂绪或今日构想，再进行结构化梳理！");
+      return;
+    }
+
+    const resultBox = document.getElementById('brainDumpResult');
+    resultBox.classList.add('loading');
+    resultBox.style.display = "block";
+    resultBox.innerText = "⚡ 正在解构脑海闪念、识别底层逻辑主线与高杠杆切入点...";
+
+    const now = new Date();
+    const curTimeStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+
+    const sysPrompt = `你是一位冷静、敏锐、擅长将混沌思绪转化为清晰秩序的认知架构师（Cognitive Architect）。
+【严格风格准则】：
+- 严禁任何矫情、过分亲昵的称谓（绝对禁止“亲爱的”、“棒极了”、“加油！”等废话）。
+- 绝不客套问候，直接切入核心逻辑。
+- 拒绝空洞的常识建议，聚焦于对用户原始思考碎片的降噪、解构与优先级重组。
+- 保证回复精炼、有穿透力、结构完备，控制在 200-280 字以内。
+
+请按以下三段输出：
+1.【核心主线与隐性秩序】：透过表面闪念，一语道破今天最重要的底层思考主线或战略矛盾。
+2.【建议单核切入点 (Top 2-3)】：提炼出今天最具备高杠杆回报的 2 到 3 项具体动作（可直接作为今日防丢锚）。
+3.【精力防线提示】：结合其当前生理周期与晨间精力状态，指出今天最应规避的认知摩擦或精力泄漏陷阱。`;
+
+    const sleepSum = document.getElementById('sleepSummaryText').innerText;
+    const userPrompt = `
+【当前物理时间】：${curTimeStr}
+【生理背景】：
+- 生理周期：${document.getElementById('cycleNameDisplay').innerText} (${document.getElementById('cycleDayDisplay').innerText})
+- 周期伴随症状：${dayData.cycleSymptomNote || "无"}
+- 昨夜睡眠：${sleepSum}
+- 晨间主观精力：${dayData.readiness || "balanced"}，多巴胺电量：${dayData.battery || 3}/5
+- 今日身体意图：${dayData.physicalIntent || "未设定"}
+
+【晨间 Brain Dump 原始倾泻内容】：
+"""
+${dumpText}
+"""
+`;
+
+    const res = await callGeminiAPI(sysPrompt, userPrompt);
+    resultBox.classList.remove('loading');
+    if (res) {
+      resultBox.innerText = res;
+      dayData.brainDumpAICache = res;
+      autoSave();
+    } else {
+      resultBox.style.display = "none";
     }
   }
 
